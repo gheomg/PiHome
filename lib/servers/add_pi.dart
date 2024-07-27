@@ -42,6 +42,7 @@ class _AddPi extends State<AddPi> {
       body: Scaffold(
         appBar: AppBar(
           title: const Text('New connection'),
+          centerTitle: false,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -247,8 +248,9 @@ class _AddPi extends State<AddPi> {
     );
 
     Pihole piHole = Pihole(
+      host: server.host,
+      port: server.port,
       protocol: server.protocol,
-      address: server.address,
       user: server.user,
       password: server.password,
       token: server.authToken,
@@ -261,7 +263,7 @@ class _AddPi extends State<AddPi> {
     } else {
       snackBarKey.currentState?.showSnackBar(SnackBar(
         content: Text(
-          'Could not access the RaspberryPi hosted at ${server.address}',
+          'Could not access the RaspberryPi hosted at ${piHole.address}',
           style: const TextStyle(
             fontSize: 16,
           ),
@@ -288,5 +290,7 @@ class _AddPi extends State<AddPi> {
   }
 
   bool get isButtonEnabled =>
-      _hostController.text.isNotEmpty && _tokenController.text.isNotEmpty;
+      _hostController.text.isNotEmpty &&
+      (_tokenController.text.isNotEmpty ||
+          _userController.text.isNotEmpty && _passController.text.isNotEmpty);
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pihole_manager/database/database_helper.dart';
 import 'package:pihole_manager/models/server_details.dart';
 import 'package:pihole_manager/servers/add_pi.dart';
 
@@ -10,6 +11,20 @@ class ServerList extends StatefulWidget {
 }
 
 class _ServerListState extends State<ServerList> {
+  List<ServerDetails> servers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadServers();
+  }
+
+  void loadServers() {
+    DatabaseHelper.instance.getAllServer().then((value) {
+      setState(() => servers = value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,24 +32,18 @@ class _ServerListState extends State<ServerList> {
         title: const Text('Servers'),
       ),
       floatingActionButton: FloatingActionButton(
+        onPressed: onPressed,
         child: const Icon(
           Icons.add,
         ),
-        onPressed: () {
-          Navigator.of(context)
-              .push(
-                MaterialPageRoute<ServerDetails>(
-                  builder: (BuildContext context) => const AddPi(),
-                ),
-              )
-              .then((value) {});
-        },
       ),
       body: SafeArea(
-        child: ListView(
+        child: ListView.builder(
           shrinkWrap: true,
-          children: [
-            Padding(
+          itemCount: servers.length,
+          itemBuilder: (context, index) {
+            ServerDetails server = servers.elementAt(index);
+            return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 elevation: 5,
@@ -44,10 +53,10 @@ class _ServerListState extends State<ServerList> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             child: Icon(Icons.lan_rounded),
                           ),
@@ -55,14 +64,14 @@ class _ServerListState extends State<ServerList> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'http://raspberrypi.local',
-                                style: TextStyle(
+                                server.address,
+                                style: const TextStyle(
                                   fontSize: 16,
                                 ),
                               ),
                               Text(
-                                'Pi.Hole',
-                                style: TextStyle(
+                                server.name,
+                                style: const TextStyle(
                                   fontSize: 16,
                                 ),
                               )
@@ -115,10 +124,23 @@ class _ServerListState extends State<ServerList> {
                   ),
                 ),
               ),
-            )
-          ],
+            );
+          },
         ),
       ),
     );
+  }
+
+  void onPressed() {
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute<ServerDetails>(
+        builder: (BuildContext context) => const AddPi(),
+      ),
+    )
+        .then((value) {
+      if (value != null) DatabaseHelper.instance.addServer(value);
+      loadServers();
+    });
   }
 }

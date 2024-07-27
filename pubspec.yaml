@@ -1,5 +1,5 @@
 name: pihole_manager
-description: "A new Flutter project."
+description: "Pi.Hole Manager"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -15,11 +15,15 @@ dependencies:
   dio: ^5.5.0+1
   pie_chart: ^5.4.0
   progress_bar_chart: ^0.0.12
+  sqflite: ^2.3.3+1
+  get_it: ^7.7.0
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  build_runner: ^2.0.0
 
 flutter:
   uses-material-design: true

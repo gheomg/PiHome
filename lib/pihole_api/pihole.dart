@@ -2,23 +2,27 @@ import 'package:dio/dio.dart';
 import 'package:pihole_manager/enums/protocol.dart';
 
 class Pihole {
-  String address;
+  String host;
+  String? port;
   Protocol protocol;
   String? user;
   String? password;
   String? token;
 
   Pihole({
-    required this.address,
     required this.protocol,
+    required this.host,
     this.user,
     this.password,
     this.token,
+    this.port = '',
   }) {
     init();
   }
 
   Dio? dio;
+
+  String get address => '$host${port!.isNotEmpty ? ':$port' : ''}';
 
   void init() {
     dio = Dio(BaseOptions(baseUrl: '${protocol.getString()}://$address'));
