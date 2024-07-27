@@ -7,7 +7,12 @@ import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/widgets/custom_text_field.dart';
 
 class AddPi extends StatefulWidget {
-  const AddPi({super.key});
+  final ServerDetails? server;
+
+  const AddPi({
+    super.key,
+    this.server,
+  });
 
   @override
   State<StatefulWidget> createState() => _AddPi();
@@ -28,12 +33,31 @@ class _AddPi extends State<AddPi> {
   void initState() {
     super.initState();
 
+    loadOnEdit();
+
     _hostController.addListener(() => _updateInfoLabel());
     _portController.addListener(() => _updateInfoLabel());
     _nameController.addListener(() => _updateInfoLabel());
     _tokenController.addListener(() => _updateInfoLabel());
     _userController.addListener(() => _updateInfoLabel());
     _passController.addListener(() => _updateInfoLabel());
+  }
+
+  void loadOnEdit() {
+    if (widget.server != null) {
+      _hostController.text = widget.server?.host ?? '';
+      _portController.text = widget.server?.port ?? '';
+      _nameController.text = widget.server?.name ?? '';
+      _tokenController.text = widget.server?.authToken ?? '';
+      _userController.text = widget.server?.user ?? '';
+      _passController.text = widget.server?.password ?? '';
+      protocol = widget.server!.protocol;
+      if (widget.server!.authToken!.isNotEmpty) {
+        authenticationType = AuthenticationType.token;
+      } else {
+        authenticationType = AuthenticationType.credentials;
+      }
+    }
   }
 
   @override
@@ -236,7 +260,7 @@ class _AddPi extends State<AddPi> {
     );
   }
 
-  void addConnection() async {
+  Future<void> addConnection() async {
     ServerDetails server = ServerDetails(
       host: _hostController.text,
       port: _portController.text,
@@ -256,22 +280,24 @@ class _AddPi extends State<AddPi> {
       token: server.authToken,
     );
 
-    bool success = await piHole.checkConnection();
-
-    if (success) {
-      Navigator.of(context).pop(server);
-    } else {
-      snackBarKey.currentState?.showSnackBar(SnackBar(
-        content: Text(
-          'Could not access the RaspberryPi hosted at ${piHole.address}',
-          style: const TextStyle(
-            fontSize: 16,
-          ),
-        ),
-        backgroundColor: Colors.red,
-        showCloseIcon: true,
-      ));
-    }
+    await piHole.checkConnection().then(
+      (success) {
+        if (success) {
+          Navigator.of(context).pop(server);
+        } else {
+          snackBarKey.currentState?.showSnackBar(SnackBar(
+            content: Text(
+              'Could not access the RaspberryPi hosted at ${piHole.address}',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            backgroundColor: Colors.red,
+            showCloseIcon: true,
+          ));
+        }
+      },
+    );
   }
 
   void _updateInfoLabel() {

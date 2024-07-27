@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pihole_manager/database/database_helper.dart';
+import 'package:pihole_manager/home.dart';
 import 'package:pihole_manager/models/server_details.dart';
+import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/servers/add_pi.dart';
 
 class ServerList extends StatefulWidget {
@@ -89,7 +92,7 @@ class _ServerListState extends State<ServerList> {
                                   WidgetStatePropertyAll(Colors.white),
                               elevation: WidgetStatePropertyAll(0),
                             ),
-                            onPressed: () {},
+                            onPressed: () => onPressed(server: server),
                             child: const Text(
                               'Edit',
                               style: TextStyle(
@@ -101,7 +104,7 @@ class _ServerListState extends State<ServerList> {
                             width: 10,
                           ),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () => connect(server: server),
                             child: const Row(
                               children: [
                                 Padding(
@@ -131,16 +134,34 @@ class _ServerListState extends State<ServerList> {
     );
   }
 
-  void onPressed() {
+  void onPressed({ServerDetails? server}) {
     Navigator.of(context)
         .push(
       MaterialPageRoute<ServerDetails>(
-        builder: (BuildContext context) => const AddPi(),
+        builder: (BuildContext context) => AddPi(
+          server: server,
+        ),
       ),
     )
         .then((value) {
       if (value != null) DatabaseHelper.instance.addServer(value);
       loadServers();
     });
+  }
+
+  void connect({required ServerDetails server}) {
+    Pihole pihole = Pihole.fromServer(server: server);
+    pihole.checkConnection().then(
+      (value) {
+        if (value) {
+          GetIt.instance.registerSingleton<Pihole>(pihole);
+
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute<ServerDetails>(
+            builder: (BuildContext context) => const Home(),
+          ));
+        }
+      },
+    );
   }
 }

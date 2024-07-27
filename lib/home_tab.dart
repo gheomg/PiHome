@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/widgets/chart_card.dart';
 import 'package:pihole_manager/widgets/info_card.dart';
 import 'package:pihole_manager/widgets/table_chart.dart';
 
 class HomeTab extends StatefulWidget {
-  final Pihole pihole;
-
-  const HomeTab({
-    super.key,
-    required this.pihole,
-  });
+  const HomeTab({super.key});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> {
-  Pihole get pihole => widget.pihole;
+  Pihole pihole = GetIt.instance.get<Pihole>();
   String version = 'not loaded';
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

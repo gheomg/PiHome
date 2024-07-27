@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 
 class QueryLog extends StatefulWidget {
-  final Pihole pihole;
-
-  const QueryLog({super.key, required this.pihole});
+  const QueryLog({super.key});
 
   @override
   State<QueryLog> createState() => _QueryLogState();
 }
 
 class _QueryLogState extends State<QueryLog> {
+  Pihole pihole = GetIt.instance.get<Pihole>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +21,7 @@ class _QueryLogState extends State<QueryLog> {
         backgroundColor: Colors.white,
       ),
       body: FutureBuilder(
-        future: widget.pihole.getAllQueries(
+        future: pihole.getAllQueries(
           addTimestamp: true,
           limit: 100,
         ),

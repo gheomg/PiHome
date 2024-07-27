@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:pihole_manager/enums/protocol.dart';
+import 'package:pihole_manager/models/server_details.dart';
 
 class Pihole {
-  String host;
-  String? port;
-  Protocol protocol;
-  String? user;
-  String? password;
-  String? token;
+  final String host;
+  final String? port;
+  final Protocol protocol;
+  final String? user;
+  final String? password;
+  final String? token;
 
   Pihole({
     required this.protocol,
@@ -17,6 +18,16 @@ class Pihole {
     this.token,
     this.port = '',
   }) {
+    init();
+  }
+
+  Pihole.fromServer({required ServerDetails server})
+      : protocol = server.protocol,
+        host = server.host,
+        port = server.port,
+        user = server.user,
+        password = server.password,
+        token = server.authToken {
     init();
   }
 

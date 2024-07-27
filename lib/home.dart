@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pihole_manager/home_tab.dart';
-import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/query_log.dart';
 
 class Home extends StatefulWidget {
-  final Pihole pihole;
-
-  const Home({super.key, required this.pihole});
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -49,9 +46,9 @@ class _HomeState extends State<Home> {
       case 1:
         return Container();
       case 2:
-        return QueryLog(pihole: widget.pihole);
+        return const QueryLog();
       default:
-        return HomeTab(pihole: widget.pihole);
+        return const HomeTab();
     }
   }
 }
