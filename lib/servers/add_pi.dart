@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pihole_manager/database/database_helper.dart';
 import 'package:pihole_manager/enums/authentication_type.dart';
 import 'package:pihole_manager/enums/protocol.dart';
 import 'package:pihole_manager/globals.dart';
@@ -19,6 +20,8 @@ class AddPi extends StatefulWidget {
 }
 
 class _AddPi extends State<AddPi> {
+  ServerDetails? get server => widget.server;
+
   final TextEditingController _hostController = TextEditingController();
   final TextEditingController _portController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -44,15 +47,15 @@ class _AddPi extends State<AddPi> {
   }
 
   void loadOnEdit() {
-    if (widget.server != null) {
-      _hostController.text = widget.server?.host ?? '';
-      _portController.text = widget.server?.port ?? '';
-      _nameController.text = widget.server?.name ?? '';
-      _tokenController.text = widget.server?.authToken ?? '';
-      _userController.text = widget.server?.user ?? '';
-      _passController.text = widget.server?.password ?? '';
-      protocol = widget.server!.protocol;
-      if (widget.server!.authToken!.isNotEmpty) {
+    if (server != null) {
+      _hostController.text = server?.host ?? '';
+      _portController.text = server?.port ?? '';
+      _nameController.text = server?.name ?? '';
+      _tokenController.text = server?.authToken ?? '';
+      _userController.text = server?.user ?? '';
+      _passController.text = server?.password ?? '';
+      protocol = server!.protocol;
+      if (server!.authToken!.isNotEmpty) {
         authenticationType = AuthenticationType.token;
       } else {
         authenticationType = AuthenticationType.credentials;
@@ -67,6 +70,20 @@ class _AddPi extends State<AddPi> {
         appBar: AppBar(
           title: const Text('New connection'),
           centerTitle: false,
+          actions: [
+            if (server != null)
+              IconButton(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                onPressed: () {
+                  DatabaseHelper.instance.deleteServer(server!.host);
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+              )
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(

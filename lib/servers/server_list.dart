@@ -5,6 +5,7 @@ import 'package:pihole_manager/home.dart';
 import 'package:pihole_manager/models/server_details.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/servers/add_pi.dart';
+import 'package:pihole_manager/widgets/server_card.dart';
 
 class ServerList extends StatefulWidget {
   const ServerList({super.key});
@@ -42,90 +43,15 @@ class _ServerListState extends State<ServerList> {
       ),
       body: SafeArea(
         child: ListView.builder(
-          shrinkWrap: true,
           itemCount: servers.length,
           itemBuilder: (context, index) {
             ServerDetails server = servers.elementAt(index);
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 5,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Icon(Icons.lan_rounded),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                server.address,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Text(
-                                server.name,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ElevatedButton(
-                            style: const ButtonStyle(
-                              backgroundColor:
-                                  WidgetStatePropertyAll(Colors.white),
-                              elevation: WidgetStatePropertyAll(0),
-                            ),
-                            onPressed: () => onPressed(server: server),
-                            child: const Text(
-                              'Edit',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          ElevatedButton(
-                            onPressed: () => connect(server: server),
-                            child: const Row(
-                              children: [
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 5.0),
-                                  child: Icon(Icons.link_rounded),
-                                ),
-                                Text(
-                                  'Connect',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+              child: ServerCard(
+                server: server,
+                onPressed: () => onPressed(server: server),
+                onConnect: () => connect(server: server),
               ),
             );
           },
