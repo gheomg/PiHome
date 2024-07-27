@@ -60,6 +60,7 @@ class _AddPi extends State<AddPi> {
       } else {
         authenticationType = AuthenticationType.credentials;
       }
+      _updateInfoLabel();
     }
   }
 
@@ -150,6 +151,7 @@ class _AddPi extends State<AddPi> {
                       controller: _hostController,
                       label: 'Host address',
                       icon: Icons.developer_board_rounded,
+                      enabled: server == null,
                     ),
                   ),
                   Padding(
@@ -159,6 +161,7 @@ class _AddPi extends State<AddPi> {
                       label: 'Port',
                       icon: Icons.numbers,
                       keyboardType: TextInputType.number,
+                      enabled: server == null,
                     ),
                   ),
                   Padding(

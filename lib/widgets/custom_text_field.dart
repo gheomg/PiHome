@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
   final String? helperText;
   final bool? autocorrect;
   final bool? obscureText;
+  final bool? enabled;
 
   const CustomTextField({
     super.key,
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
     this.helperText,
     this.autocorrect,
     this.obscureText,
+    this.enabled,
   });
 
   @override
@@ -50,6 +52,7 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       autocorrect: autocorrect ?? true,
       obscureText: obscureText ?? false,
+      enabled: enabled,
     );
   }
 }
