@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class ChartCard extends StatelessWidget {
+  final List<Color> colors = [];
   final Map<String, double> dataMap;
   final Map<String, String>? legendLabels;
 
-  const ChartCard({super.key, required this.dataMap, this.legendLabels});
+  ChartCard({
+    super.key,
+    required this.dataMap,
+    this.legendLabels,
+  }) {
+    loadColor();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +55,22 @@ class ChartCard extends StatelessWidget {
           chartValuesOptions: const ChartValuesOptions(
             showChartValues: false,
           ),
+          colorList: colors,
         ),
       ),
+    );
+  }
+
+  void loadColor() {
+    int index = 0;
+    dataMap.forEach(
+      (key, value) {
+        if (index > colors.length - 1) {
+          MaterialColor color = Colors.primaries.reversed.elementAt(index);
+          colors.add(color);
+        }
+        index++;
+      },
     );
   }
 }
