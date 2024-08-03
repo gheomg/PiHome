@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
+import 'package:pihole_manager/widgets/clients_data_bar_chart.dart';
 import 'package:pihole_manager/widgets/chart_card.dart';
 import 'package:pihole_manager/widgets/info_card.dart';
 import 'package:pihole_manager/widgets/table_chart.dart';
@@ -14,12 +15,6 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   Pihole pihole = GetIt.instance.get<Pihole>();
-  String version = 'not loaded';
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +92,7 @@ class _HomeTabState extends State<HomeTab> {
                     );
                   },
                 ),
+                const ClientsDataBarChart(),
                 FutureBuilder(
                   future: pihole.getQueryTypes(),
                   builder: (context, snapshot) {

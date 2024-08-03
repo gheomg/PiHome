@@ -39,12 +39,14 @@ class Pihole {
     dio = Dio(BaseOptions(baseUrl: '${protocol.getString()}://$address'));
   }
 
-  Future<Response> get({String? method, int? limit, bool? addTimestamp}) async {
+  Future<Response> get(
+      {Map<String, String>? additionalParams,
+      int? limit,
+      bool? addTimestamp}) async {
     Map<String, dynamic> params = {
       'auth': token,
     };
-    if (method != null) params[method] = limit ?? '';
-
+    if (additionalParams != null) params.addAll(additionalParams);
     if (addTimestamp != null) params['_'] = DateTime.timestamp().millisecond;
 
     return await dio!.get(
@@ -54,9 +56,14 @@ class Pihole {
   }
 
   Future<Map<String, dynamic>> getData(
-      {String? method, int? limit, bool? addTimestamp}) async {
-    final response =
-        await get(method: method, limit: limit, addTimestamp: addTimestamp);
+      {Map<String, String>? additionalParams,
+      int? limit,
+      bool? addTimestamp}) async {
+    final response = await get(
+      additionalParams: additionalParams,
+      limit: limit,
+      addTimestamp: addTimestamp,
+    );
     if (response.statusCode == 200) {
       return response.data as Map<String, dynamic>;
     } else {
@@ -66,7 +73,9 @@ class Pihole {
 
   Future<bool> checkConnection() async {
     try {
-      final response = await get(method: 'status');
+      final response = await get(
+        additionalParams: {'status': ''},
+      );
       if (response.statusCode == 200) {
         return (response.data as Map<String, dynamic>).containsKey('status');
       } else {
@@ -78,32 +87,56 @@ class Pihole {
   }
 
   Future<Map<String, dynamic>> getPiHoleSummary() async {
-    return await getData(method: 'summary');
+    return await getData(
+      additionalParams: {'summary': ''},
+    );
   }
 
   Future<Map<String, dynamic>> getQueryTypes() async {
-    return await getData(method: 'getQueryTypes');
+    return await getData(
+      additionalParams: {'getQueryTypes': ''},
+    );
   }
 
   Future<Map<String, dynamic>> getForwardDestinations() async {
-    return await getData(method: 'getForwardDestinations');
+    return await getData(
+      additionalParams: {'getForwardDestinations': ''},
+    );
   }
 
   Future<Map<String, dynamic>> getTopItems() async {
-    return await getData(method: 'topItems');
+    return await getData(
+      additionalParams: {'topItems': ''},
+    );
   }
 
   Future<Map<String, dynamic>> getQuerySources() async {
-    return await getData(method: 'getQuerySources');
+    return await getData(
+      additionalParams: {'getQuerySources': ''},
+    );
   }
 
   Future<Map<String, dynamic>> topClientsBlocked() async {
-    return await getData(method: 'topClientsBlocked');
+    return await getData(
+      additionalParams: {'topClientsBlocked': ''},
+    );
   }
 
   Future<Map<String, dynamic>> getAllQueries(
       {int? limit, bool? addTimestamp}) async {
     return await getData(
-        method: 'getAllQueries', limit: limit, addTimestamp: addTimestamp);
+      additionalParams: {'getAllQueries': ''},
+      limit: limit,
+      addTimestamp: addTimestamp,
+    );
+  }
+
+  Future<Map<String, dynamic>> getOverTimeDataClients() async {
+    return await getData(
+      additionalParams: {
+        'overTimeDataClients': '',
+        'getClientNames': '',
+      },
+    );
   }
 }
