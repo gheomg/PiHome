@@ -6,6 +6,7 @@ class InfoCard extends StatelessWidget {
   final Color color;
   final IconData icon;
   final Color iconColor;
+  final String infoText;
 
   const InfoCard({
     super.key,
@@ -14,6 +15,7 @@ class InfoCard extends StatelessWidget {
     required this.color,
     required this.icon,
     required this.iconColor,
+    required this.infoText,
   });
 
   @override
@@ -87,9 +89,9 @@ class InfoCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Text(
-                  'See details',
-                  style: TextStyle(
+                Text(
+                  infoText,
+                  style: const TextStyle(
                     color: Colors.white,
                   ),
                 ),

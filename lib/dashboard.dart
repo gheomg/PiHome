@@ -52,6 +52,8 @@ class _Dashboard extends State<Dashboard> {
                             color: Colors.blue,
                             icon: Icons.query_stats,
                             iconColor: Colors.blue.shade700.withOpacity(0.5),
+                            infoText:
+                                '${data['unique_clients'] ?? 0} active clients',
                           ),
                         ),
                         SizedBox(
@@ -62,6 +64,7 @@ class _Dashboard extends State<Dashboard> {
                             color: Colors.red,
                             icon: Icons.back_hand,
                             iconColor: Colors.red.shade700.withOpacity(0.5),
+                            infoText: 'List blocked queries',
                           ),
                         ),
                         SizedBox(
@@ -72,6 +75,7 @@ class _Dashboard extends State<Dashboard> {
                             color: Colors.orange,
                             icon: Icons.pie_chart,
                             iconColor: Colors.orange.shade700.withOpacity(0.5),
+                            infoText: 'List all queries',
                           ),
                         ),
                         SizedBox(
@@ -82,6 +86,7 @@ class _Dashboard extends State<Dashboard> {
                             color: Colors.green,
                             icon: Icons.format_list_bulleted_outlined,
                             iconColor: Colors.green.shade700.withOpacity(0.5),
+                            infoText: 'Manage adlists',
                           ),
                         ),
                       ],
