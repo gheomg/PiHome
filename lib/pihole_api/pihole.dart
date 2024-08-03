@@ -139,4 +139,12 @@ class Pihole {
       },
     );
   }
+
+  Future<Map<String, dynamic>> getOverTimeData10mins() async {
+    return await getData(
+      additionalParams: {
+        'overTimeData10mins': '',
+      },
+    );
+  }
 }

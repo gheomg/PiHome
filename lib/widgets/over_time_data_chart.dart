@@ -1,26 +1,25 @@
-import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
+import 'package:pihole_manager/widgets/clients_data_bar_chart.dart';
 
-class ClientsDataBarChart extends StatefulWidget {
-  const ClientsDataBarChart({
-    super.key,
-  });
+class OverTimeDataChart extends StatefulWidget {
+  const OverTimeDataChart({super.key});
 
   @override
-  State<ClientsDataBarChart> createState() => _ClientsDataBarChartState();
+  State<StatefulWidget> createState() => _OverTimeDataChart();
 }
 
-class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
+class _OverTimeDataChart extends State<OverTimeDataChart> {
   Pihole pihole = GetIt.instance.get<Pihole>();
   final List<Color> colors = [];
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _getOverTimeDataClients(),
+      future: _getOverTimeData(),
       builder:
           (context, AsyncSnapshot<List<Series<ClientsData, String>>> snapshot) {
         return SizedBox(
@@ -48,34 +47,33 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
     );
   }
 
-  Future<List<Series<ClientsData, String>>> _getOverTimeDataClients() async {
-    Map<String, dynamic> overTimeDataClients =
-        await pihole.getOverTimeDataClients();
+  Future<List<Series<ClientsData, String>>> _getOverTimeData() async {
+    Map<String, dynamic> data = await pihole.getOverTimeData10mins();
 
-    List<Map<String, String>> clients = [];
-    for (var client in overTimeDataClients['clients']) {
-      if (client is Map) {
-        Map<String, String> clientMap = {};
-        client.forEach((key, value) {
-          if (key is String && value is String) {
-            clientMap[key] = value;
-          }
-        });
-        clients.add(clientMap);
-      }
-    }
-
-    Map<String, List<dynamic>> overTime = {};
-    if (overTimeDataClients['over_time'] is Map) {
-      overTimeDataClients['over_time'].forEach((key, value) {
-        if (key is String && value is List<dynamic>) {
-          overTime[key] = value;
+    Map<String, int> domainOverTime = {};
+    if (data['domains_over_time'] is Map) {
+      data['domains_over_time'].forEach((key, value) {
+        if (key is String && value is int) {
+          domainOverTime[key] = value;
         }
       });
     }
+
+    Map<String, int> adsOverTime = {};
+    if (data['ads_over_time'] is Map) {
+      data['ads_over_time'].forEach((key, value) {
+        if (key is String && value is int) {
+          adsOverTime[key] = value;
+        }
+      });
+    }
+
     List<Series<ClientsData, String>> result = [];
-    for (MapEntry<String, List<dynamic>> time
-        in overTime.entries.toList().reversed) {
+
+    for (int i = domainOverTime.entries.length - 1; i >= 0; i--) {
+      MapEntry<String, int> domain = domainOverTime.entries.elementAt(i);
+      MapEntry<String, int> ad = adsOverTime.entries.elementAt(i);
+
       result.add(
         Series<ClientsData, String>(
           id: 'Desktop',
@@ -85,10 +83,10 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
             ),
           ),
           measureFn: (ClientsData data, _) => data.dataList,
-          data: time.value
-              .where((element) => element is int && element != 0)
-              .map((e) => ClientsData(time.key, e))
-              .toList(),
+          data: [
+            ClientsData(ad.key, ad.value),
+            ClientsData(domain.key, domain.value),
+          ],
           colorFn: (datum, index) => getClientColor(index ?? 0),
         ),
       );
@@ -107,11 +105,4 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
 
     return colors.last;
   }
-}
-
-class ClientsData {
-  final String time;
-  final int dataList;
-
-  ClientsData(this.time, this.dataList);
 }

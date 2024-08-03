@@ -4,6 +4,7 @@ import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/widgets/clients_data_bar_chart.dart';
 import 'package:pihole_manager/widgets/chart_card.dart';
 import 'package:pihole_manager/widgets/info_card.dart';
+import 'package:pihole_manager/widgets/over_time_data_chart.dart';
 import 'package:pihole_manager/widgets/table_chart.dart';
 
 class HomeTab extends StatefulWidget {
@@ -93,6 +94,7 @@ class _HomeTabState extends State<HomeTab> {
                   },
                 ),
                 const ClientsDataBarChart(),
+                const OverTimeDataChart(),
                 FutureBuilder(
                   future: pihole.getQueryTypes(),
                   builder: (context, snapshot) {
