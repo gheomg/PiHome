@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pihole_manager/home_tab.dart';
+import 'package:pihole_manager/dashboard.dart';
 import 'package:pihole_manager/query_log.dart';
 
 class Home extends StatefulWidget {
@@ -15,40 +15,61 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: body,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedIndex,
-        onDestinationSelected: (int index) =>
-            setState(() => selectedIndex = index),
-        destinations: const <Widget>[
-          NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.screen_search_desktop_outlined),
-            selectedIcon: Icon(Icons.screen_search_desktop_rounded),
-            label: 'Domains',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.text_snippet_outlined),
-            selectedIcon: Icon(Icons.text_snippet),
-            label: 'Query log',
-          ),
-        ],
+      appBar: AppBar(
+        title: const Text('Dashboard'),
       ),
+      drawer: Drawer(
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.greenAccent,
+              ),
+              child: Text(
+                'Pi-Hole',
+                style: TextStyle(
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: const Text('Dashboard'),
+              onTap: () {
+                setState(() => selectedIndex = 0);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Query log'),
+              onTap: () {
+                setState(() => selectedIndex = 1);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Domains'),
+              onTap: () {
+                setState(() => selectedIndex = 2);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+      body: body,
     );
   }
 
   Widget get body {
     switch (selectedIndex) {
       case 1:
-        return Container();
-      case 2:
         return const QueryLog();
+      case 2:
+        return Container();
       default:
-        return const HomeTab();
+        return const Dashboard();
     }
   }
 }

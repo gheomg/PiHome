@@ -7,24 +7,19 @@ import 'package:pihole_manager/widgets/info_card.dart';
 import 'package:pihole_manager/widgets/over_time_data_chart.dart';
 import 'package:pihole_manager/widgets/table_chart.dart';
 
-class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
+class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
 
   @override
-  State<HomeTab> createState() => _HomeTabState();
+  State<Dashboard> createState() => _Dashboard();
 }
 
-class _HomeTabState extends State<HomeTab> {
+class _Dashboard extends State<Dashboard> {
   Pihole pihole = GetIt.instance.get<Pihole>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text('Pi.Hole Manager'),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

@@ -36,6 +36,10 @@ class TableChart extends StatelessWidget {
         ),
         child: Table(
           defaultVerticalAlignment: TableCellVerticalAlignment.intrinsicHeight,
+          columnWidths: const {
+            0: FlexColumnWidth(2),
+            1: FlexColumnWidth(1),
+          },
           children: data.entries.map(
             (MapEntry<String, dynamic> entry) {
               return TableRow(
@@ -44,23 +48,41 @@ class TableChart extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(!entry.key.contains('|')
-                          ? entry.key
-                          : entry.key.split('|').first),
-                      Text('Hits: ${entry.value.toString()}'),
+                      Text(
+                        !entry.key.contains('|')
+                            ? entry.key
+                            : entry.key.split('|').first,
+                        style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        'Hits: ${entry.value.toString()}',
+                        style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          color: Colors.black54,
+                          fontSize: 12,
+                        ),
+                      ),
                     ],
                   ),
-                  ProgressBarChart(
-                    values: [
-                      StatisticsItem(
-                        Colors.green,
-                        entry.value.toDouble(),
-                      )
-                    ],
-                    height: 10,
-                    borderRadius: 10,
-                    totalPercentage: maxValue,
-                    showLables: false,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: ProgressBarChart(
+                        values: [
+                          StatisticsItem(
+                            Colors.green,
+                            entry.value.toDouble(),
+                          )
+                        ],
+                        height: 10,
+                        borderRadius: 10,
+                        totalPercentage: maxValue,
+                        showLables: false,
+                      ),
+                    ),
                   ),
                 ],
               );

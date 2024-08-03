@@ -16,10 +16,6 @@ class _QueryLogState extends State<QueryLog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Query log'),
-        backgroundColor: Colors.white,
-      ),
       body: FutureBuilder(
         future: pihole.getAllQueries(
           addTimestamp: true,

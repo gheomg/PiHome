@@ -21,6 +21,9 @@ class MyApp extends StatelessWidget {
             backgroundColor: WidgetStatePropertyAll(Colors.lightGreen.shade200),
           ),
         ),
+        appBarTheme: const AppBarTheme(
+          centerTitle: false,
+        ),
         useMaterial3: true,
       ),
       scaffoldMessengerKey: snackBarKey,

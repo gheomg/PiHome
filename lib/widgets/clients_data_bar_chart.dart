@@ -23,22 +23,25 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
       future: _getOverTimeDataClients(),
       builder:
           (context, AsyncSnapshot<List<Series<ClientsData, String>>> snapshot) {
-        return SizedBox(
-          height: 200,
-          child: BarChart(
-            (snapshot.data ?? []).reversed.toList(),
-            barGroupingType: BarGroupingType.stacked,
-            domainAxis: const OrdinalAxisSpec(
-              renderSpec: SmallTickRendererSpec(
-                labelStyle: TextStyleSpec(
-                  fontSize: 10,
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: SizedBox(
+            height: 200,
+            child: BarChart(
+              (snapshot.data ?? []).reversed.toList(),
+              barGroupingType: BarGroupingType.stacked,
+              domainAxis: const OrdinalAxisSpec(
+                renderSpec: SmallTickRendererSpec(
+                  labelStyle: TextStyleSpec(
+                    fontSize: 10,
+                  ),
                 ),
               ),
-            ),
-            primaryMeasureAxis: const NumericAxisSpec(
-              renderSpec: GridlineRendererSpec(
-                labelStyle: TextStyleSpec(
-                  fontSize: 10,
+              primaryMeasureAxis: const NumericAxisSpec(
+                renderSpec: GridlineRendererSpec(
+                  labelStyle: TextStyleSpec(
+                    fontSize: 10,
+                  ),
                 ),
               ),
             ),

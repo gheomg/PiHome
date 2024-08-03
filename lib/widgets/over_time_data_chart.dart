@@ -22,22 +22,25 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
       future: _getOverTimeData(),
       builder:
           (context, AsyncSnapshot<List<Series<ClientsData, String>>> snapshot) {
-        return SizedBox(
-          height: 200,
-          child: BarChart(
-            (snapshot.data ?? []).reversed.toList(),
-            barGroupingType: BarGroupingType.stacked,
-            domainAxis: const OrdinalAxisSpec(
-              renderSpec: SmallTickRendererSpec(
-                labelStyle: TextStyleSpec(
-                  fontSize: 10,
+        return Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: SizedBox(
+            height: 200,
+            child: BarChart(
+              (snapshot.data ?? []).reversed.toList(),
+              barGroupingType: BarGroupingType.stacked,
+              domainAxis: const OrdinalAxisSpec(
+                renderSpec: SmallTickRendererSpec(
+                  labelStyle: TextStyleSpec(
+                    fontSize: 10,
+                  ),
                 ),
               ),
-            ),
-            primaryMeasureAxis: const NumericAxisSpec(
-              renderSpec: GridlineRendererSpec(
-                labelStyle: TextStyleSpec(
-                  fontSize: 10,
+              primaryMeasureAxis: const NumericAxisSpec(
+                renderSpec: GridlineRendererSpec(
+                  labelStyle: TextStyleSpec(
+                    fontSize: 10,
+                  ),
                 ),
               ),
             ),
