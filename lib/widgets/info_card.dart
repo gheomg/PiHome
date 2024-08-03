@@ -88,11 +88,16 @@ class InfoCard extends StatelessWidget {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  infoText,
-                  style: const TextStyle(
-                    color: Colors.white,
+                Expanded(
+                  child: Text(
+                    infoText,
+                    textAlign: TextAlign.end,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
                 Icon(
