@@ -39,6 +39,14 @@ class InfoCard extends StatelessWidget {
           Stack(
             fit: StackFit.passthrough,
             children: [
+              Container(
+                alignment: Alignment.centerRight,
+                child: Icon(
+                  icon,
+                  size: 70,
+                  color: iconColor,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(
                   left: 20,
@@ -67,19 +75,14 @@ class InfoCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  icon,
-                  size: 70,
-                  color: iconColor,
-                ),
-              ),
             ],
           ),
           Container(
             decoration: BoxDecoration(
               color: iconColor,
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(10),
+              ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
