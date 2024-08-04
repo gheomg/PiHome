@@ -39,15 +39,11 @@ class Pihole {
     dio = Dio(BaseOptions(baseUrl: '${protocol.getString()}://$address'));
   }
 
-  Future<Response> get(
-      {Map<String, String>? additionalParams,
-      int? limit,
-      bool? addTimestamp}) async {
+  Future<Response> get({Map<String, String>? additionalParams}) async {
     Map<String, dynamic> params = {
       'auth': token,
     };
     if (additionalParams != null) params.addAll(additionalParams);
-    if (addTimestamp != null) params['_'] = DateTime.timestamp().millisecond;
 
     return await dio!.get(
       '/admin/api.php',
@@ -56,13 +52,9 @@ class Pihole {
   }
 
   Future<Map<String, dynamic>> getData(
-      {Map<String, String>? additionalParams,
-      int? limit,
-      bool? addTimestamp}) async {
+      {Map<String, String>? additionalParams}) async {
     final response = await get(
       additionalParams: additionalParams,
-      limit: limit,
-      addTimestamp: addTimestamp,
     );
     if (response.statusCode == 200) {
       return response.data as Map<String, dynamic>;
@@ -122,12 +114,12 @@ class Pihole {
     );
   }
 
-  Future<Map<String, dynamic>> getAllQueries(
-      {int? limit, bool? addTimestamp}) async {
+  Future<Map<String, dynamic>> getAllQueries() async {
     return await getData(
-      additionalParams: {'getAllQueries': ''},
-      limit: limit,
-      addTimestamp: addTimestamp,
+      additionalParams: {
+        'getAllQueries': '100',
+        '_': DateTime.timestamp().millisecond.toString(),
+      },
     );
   }
 
