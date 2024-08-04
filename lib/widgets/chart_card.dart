@@ -1,27 +1,25 @@
+import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:pie_chart/pie_chart.dart';
+import 'package:pihole_manager/models/chart_data.dart';
 import 'package:pihole_manager/utils/colors_utils.dart';
 
 class ChartCard extends StatelessWidget {
   final List<Color> colors = [];
   final Map<String, double> dataMap;
-  final Map<String, String>? legendLabels;
+  final String title;
 
   ChartCard({
     super.key,
     required this.dataMap,
-    this.legendLabels,
-  }) {
-    loadColor();
-  }
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8.0),
       child: Container(
-        height: 200,
-        padding: const EdgeInsets.all(8.0),
+        height: 220,
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
@@ -36,42 +34,63 @@ class ChartCard extends StatelessWidget {
             ),
           ],
         ),
-        child: PieChart(
-          dataMap: dataMap,
-          chartLegendSpacing: 32,
-          chartRadius: MediaQuery.of(context).size.width / 3.2,
-          initialAngleInDegree: 270,
-          chartType: ChartType.ring,
-          ringStrokeWidth: 32,
-          legendOptions: const LegendOptions(
-            showLegendsInRow: false,
-            legendPosition: LegendPosition.right,
-            showLegends: true,
-            legendShape: BoxShape.circle,
-            legendTextStyle: TextStyle(
-              fontWeight: FontWeight.bold,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(top: 4.0, left: 8.0),
+              child: Text(title),
             ),
-          ),
-          legendLabels: legendLabels ?? {},
-          chartValuesOptions: const ChartValuesOptions(
-            showChartValues: false,
-          ),
-          colorList: colors,
+            const Divider(
+              thickness: 0.5,
+              color: Colors.black12,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 35.0),
+                child: PieChart<String>(
+                  _createSampleData(),
+                  animate: true,
+                  defaultRenderer: ArcRendererConfig(
+                    arcWidth: 35,
+                  ),
+                  behaviors: [
+                    DatumLegend(
+                      position: BehaviorPosition.end,
+                      cellPadding:
+                          const EdgeInsets.only(right: 4.0, bottom: 4.0),
+                      legendDefaultMeasure: LegendDefaultMeasure.firstValue,
+                      horizontalFirst: false,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  void loadColor() {
-    int index = 0;
-    dataMap.forEach(
-      (key, value) {
-        if (index > colors.length - 1) {
-          MaterialColor color = ColorsUtils.colors.elementAt(index);
-          colors.add(color);
-        }
-        index++;
-      },
-    );
+  List<Series<ChartData, String>> _createSampleData() {
+    return [
+      Series<ChartData, String>(
+        id: 'Sales',
+        domainFn: (ChartData data, index) => data.name.split('|').last,
+        measureFn: (ChartData data, _) => data.value,
+        colorFn: (_, int? index) =>
+            ColorsUtils.getClientColor(colors, index ?? 0),
+        data: dataMap.entries
+            .map(
+              (entry) => ChartData(
+                entry.key,
+                entry.value,
+              ),
+            )
+            .toList(),
+      ),
+    ];
   }
 }

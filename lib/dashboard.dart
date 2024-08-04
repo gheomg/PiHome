@@ -110,7 +110,10 @@ class _Dashboard extends State<Dashboard> {
                         (key, value) => MapEntry<String, double>(
                             key, value is int ? value.toDouble() : value));
 
-                    return ChartCard(dataMap: dataMap);
+                    return ChartCard(
+                      dataMap: dataMap,
+                      title: 'Query types',
+                    );
                   },
                 ),
                 FutureBuilder(
@@ -128,12 +131,7 @@ class _Dashboard extends State<Dashboard> {
 
                     return ChartCard(
                       dataMap: dataMap,
-                      legendLabels: dataMap.map(
-                        (key, value) => MapEntry(
-                          key,
-                          key.split('|').first,
-                        ),
-                      ),
+                      title: 'Upstream servers',
                     );
                   },
                 ),
@@ -148,7 +146,11 @@ class _Dashboard extends State<Dashboard> {
                     Map<String, dynamic> data = snapshot.data!;
                     Map<String, dynamic> topQueries = data['top_queries'];
 
-                    return TableChart(data: topQueries);
+                    return TableChart(
+                      data: topQueries,
+                      title: 'Top Permitted Domains',
+                      infoLabel: 'Hits',
+                    );
                   },
                 ),
                 FutureBuilder(
@@ -162,7 +164,11 @@ class _Dashboard extends State<Dashboard> {
                     Map<String, dynamic> data = snapshot.data!;
                     Map<String, dynamic> topAds = data['top_ads'];
 
-                    return TableChart(data: topAds);
+                    return TableChart(
+                      data: topAds,
+                      title: 'Top Blocked Domains',
+                      infoLabel: 'Hits',
+                    );
                   },
                 ),
                 FutureBuilder(
@@ -176,7 +182,11 @@ class _Dashboard extends State<Dashboard> {
                     Map<String, dynamic> data = snapshot.data!;
                     Map<String, dynamic> topAds = data['top_sources'];
 
-                    return TableChart(data: topAds);
+                    return TableChart(
+                      data: topAds,
+                      title: 'Top Clients (total)',
+                      infoLabel: 'Requests',
+                    );
                   },
                 ),
                 FutureBuilder(
@@ -190,7 +200,11 @@ class _Dashboard extends State<Dashboard> {
                     Map<String, dynamic> data = snapshot.data!;
                     Map<String, dynamic> topAds = data['top_sources_blocked'];
 
-                    return TableChart(data: topAds);
+                    return TableChart(
+                      data: topAds,
+                      title: 'Top Clients (blocked only)',
+                      infoLabel: 'Requests',
+                    );
                   },
                 ),
               ],
