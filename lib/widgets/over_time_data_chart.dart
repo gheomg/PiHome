@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:pihole_manager/clients_data.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
-import 'package:pihole_manager/widgets/clients_data_bar_chart.dart';
+import 'package:pihole_manager/utils/colors_utils.dart';
 
 class OverTimeDataChart extends StatefulWidget {
   const OverTimeDataChart({super.key});
@@ -24,25 +25,58 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
           (context, AsyncSnapshot<List<Series<ClientsData, String>>> snapshot) {
         return Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: SizedBox(
+          child: Container(
             height: 200,
-            child: BarChart(
-              (snapshot.data ?? []).reversed.toList(),
-              barGroupingType: BarGroupingType.stacked,
-              domainAxis: const OrdinalAxisSpec(
-                renderSpec: SmallTickRendererSpec(
-                  labelStyle: TextStyleSpec(
-                    fontSize: 10,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                color: Colors.grey.withOpacity(0.5),
+              ),
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 3,
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(top: 4.0, left: 8.0),
+                  child: const Text('Top queries'),
+                ),
+                const Divider(
+                  thickness: 0.5,
+                  color: Colors.black12,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: BarChart(
+                      (snapshot.data ?? []).reversed.toList(),
+                      barGroupingType: BarGroupingType.stacked,
+                      domainAxis: const OrdinalAxisSpec(
+                        renderSpec: SmallTickRendererSpec(
+                          labelStyle: TextStyleSpec(
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                      primaryMeasureAxis: const NumericAxisSpec(
+                        renderSpec: GridlineRendererSpec(
+                          labelStyle: TextStyleSpec(
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              primaryMeasureAxis: const NumericAxisSpec(
-                renderSpec: GridlineRendererSpec(
-                  labelStyle: TextStyleSpec(
-                    fontSize: 10,
-                  ),
-                ),
-              ),
+              ],
             ),
           ),
         );
@@ -79,7 +113,7 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
 
       result.add(
         Series<ClientsData, String>(
-          id: 'Desktop',
+          id: 'OverTimeDataChart',
           domainFn: (ClientsData data, _) => DateFormat('HH:mm').format(
             DateTime.fromMillisecondsSinceEpoch(
               (int.tryParse(data.time) ?? 0) * 1000,
@@ -90,7 +124,9 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
             ClientsData(ad.key, ad.value),
             ClientsData(domain.key, domain.value),
           ],
-          colorFn: (datum, index) => getClientColor(index ?? 0),
+          colorFn: (datum, index) => index == 0
+              ? ColorsUtils.getColor(Colors.grey)
+              : ColorsUtils.getColor(Colors.green),
         ),
       );
 
@@ -98,14 +134,5 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
     }
 
     return result;
-  }
-
-  Color getClientColor(int index) {
-    if (index < colors.length) return colors.elementAt(index);
-
-    MaterialColor color = Colors.primaries.reversed.elementAt(index);
-    colors.add(Color(r: color.red, g: color.green, b: color.blue));
-
-    return colors.last;
   }
 }

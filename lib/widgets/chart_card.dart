@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:pihole_manager/utils/colors_utils.dart';
 
 class ChartCard extends StatelessWidget {
   final List<Color> colors = [];
@@ -66,7 +67,7 @@ class ChartCard extends StatelessWidget {
     dataMap.forEach(
       (key, value) {
         if (index > colors.length - 1) {
-          MaterialColor color = Colors.primaries.reversed.elementAt(index);
+          MaterialColor color = ColorsUtils.colors.elementAt(index);
           colors.add(color);
         }
         index++;

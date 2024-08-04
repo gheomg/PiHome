@@ -93,8 +93,8 @@ class _Dashboard extends State<Dashboard> {
                     );
                   },
                 ),
-                const ClientsDataBarChart(),
                 const OverTimeDataChart(),
+                const ClientsDataBarChart(),
                 FutureBuilder(
                   future: pihole.getQueryTypes(),
                   builder: (context, snapshot) {
@@ -129,7 +129,10 @@ class _Dashboard extends State<Dashboard> {
                     return ChartCard(
                       dataMap: dataMap,
                       legendLabels: dataMap.map(
-                        (key, value) => MapEntry(key, key.split('|').first),
+                        (key, value) => MapEntry(
+                          key,
+                          key.split('|').first,
+                        ),
                       ),
                     );
                   },
