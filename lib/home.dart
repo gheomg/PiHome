@@ -41,10 +41,39 @@ class _HomeState extends State<Home> {
                 Navigator.pop(context);
               },
             ),
+            const Divider(
+              thickness: 0.5,
+              color: Colors.black12,
+            ),
             ListTile(
               title: const Text('Query log'),
               onTap: () {
                 setState(() => selectedIndex = 1);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Queries blocked'),
+              onTap: () {
+                setState(() => selectedIndex = 1);
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(
+              thickness: 0.5,
+              color: Colors.black12,
+            ),
+            ListTile(
+              title: const Text('Groups'),
+              onTap: () {
+                setState(() => selectedIndex = 2);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Clients'),
+              onTap: () {
+                setState(() => selectedIndex = 2);
                 Navigator.pop(context);
               },
             ),
@@ -54,6 +83,17 @@ class _HomeState extends State<Home> {
                 setState(() => selectedIndex = 2);
                 Navigator.pop(context);
               },
+            ),
+            ListTile(
+              title: const Text('Adlist'),
+              onTap: () {
+                setState(() => selectedIndex = 2);
+                Navigator.pop(context);
+              },
+            ),
+            const Divider(
+              thickness: 0.5,
+              color: Colors.black12,
             ),
           ],
         ),
