@@ -51,7 +51,7 @@ class _ServerCardState extends State<ServerCard> {
                       style: const TextStyle(
                         fontSize: 16,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ],

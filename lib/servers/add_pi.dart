@@ -83,7 +83,7 @@ class _AddPi extends State<AddPi> {
                   Icons.delete,
                   color: Colors.red,
                 ),
-              )
+              ),
           ],
         ),
         body: SingleChildScrollView(
@@ -252,7 +252,7 @@ class _AddPi extends State<AddPi> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -305,16 +305,18 @@ class _AddPi extends State<AddPi> {
         if (success) {
           Navigator.of(context).pop(server);
         } else {
-          snackBarKey.currentState?.showSnackBar(SnackBar(
-            content: Text(
-              'Could not access the RaspberryPi hosted at ${piHole.address}',
-              style: const TextStyle(
-                fontSize: 16,
+          snackBarKey.currentState?.showSnackBar(
+            SnackBar(
+              content: Text(
+                'Could not access the RaspberryPi hosted at ${piHole.address}',
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
               ),
+              backgroundColor: Colors.red,
+              showCloseIcon: true,
             ),
-            backgroundColor: Colors.red,
-            showCloseIcon: true,
-          ));
+          );
         }
       },
     );

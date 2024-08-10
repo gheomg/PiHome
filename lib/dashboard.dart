@@ -8,7 +8,11 @@ import 'package:pihole_manager/widgets/over_time_data_chart.dart';
 import 'package:pihole_manager/widgets/table_chart.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final Widget drawer;
+  const Dashboard({
+    super.key,
+    required this.drawer,
+  });
 
   @override
   State<Dashboard> createState() => _Dashboard();
@@ -20,6 +24,10 @@ class _Dashboard extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Dashboard'),
+      ),
+      drawer: widget.drawer,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -107,8 +115,11 @@ class _Dashboard extends State<Dashboard> {
                       (key, value) => value == 0,
                     );
                     Map<String, double> dataMap = data.map<String, double>(
-                        (key, value) => MapEntry<String, double>(
-                            key, value is int ? value.toDouble() : value));
+                      (key, value) => MapEntry<String, double>(
+                        key,
+                        value is int ? value.toDouble() : value,
+                      ),
+                    );
 
                     return ChartCard(
                       dataMap: dataMap,
@@ -123,11 +134,14 @@ class _Dashboard extends State<Dashboard> {
                         !snapshot.hasData) {
                       return Container();
                     }
-                    Map<String, dynamic> data = snapshot.data!;
-
-                    Map<String, double> dataMap = data['forward_destinations']
-                        .map<String, double>((key, value) =>
-                            MapEntry<String, double>(key, value));
+                    Map<String, dynamic> data =
+                        snapshot.data!['forward_destinations'];
+                    Map<String, double> dataMap = data.map(
+                      (key, value) => MapEntry(
+                        key,
+                        value is double ? value : 0.0,
+                      ),
+                    );
 
                     return ChartCard(
                       dataMap: dataMap,

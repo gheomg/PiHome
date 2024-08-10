@@ -5,7 +5,14 @@ import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/widgets/log_status.dart';
 
 class QueryLog extends StatefulWidget {
-  const QueryLog({super.key});
+  final Widget drawer;
+  final bool? showBlocked;
+
+  const QueryLog({
+    super.key,
+    required this.drawer,
+    this.showBlocked = false,
+  });
 
   @override
   State<QueryLog> createState() => _QueryLogState();
@@ -17,12 +24,33 @@ class _QueryLogState extends State<QueryLog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Query log ${(widget.showBlocked ?? false) ? '(blocked)' : ''}',
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      drawer: widget.drawer,
       body: FutureBuilder(
-        future: pihole.getAllQueries(),
+        future: pihole.getAllQueries(
+          forwarddest: (widget.showBlocked ?? false) ? 'blocked' : null,
+        ),
         builder: (context, snapshot) {
           if (snapshot.data == null) return Container();
 
           List<dynamic> data = snapshot.data!['data'] ?? [];
+          data.sort(
+            (a, b) {
+              if (a is! List || b is! List) return 0;
+              return a.elementAt(0).compareTo(b.elementAt(0));
+            },
+          );
 
           return ListView.builder(
             itemCount: data.length,

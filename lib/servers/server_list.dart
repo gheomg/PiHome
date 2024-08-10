@@ -82,10 +82,11 @@ class _ServerListState extends State<ServerList> {
         if (value) {
           GetIt.instance.registerSingleton<Pihole>(pihole);
 
-          Navigator.of(context)
-              .pushReplacement(MaterialPageRoute<ServerDetails>(
-            builder: (BuildContext context) => const Home(),
-          ));
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute<ServerDetails>(
+              builder: (BuildContext context) => const Home(),
+            ),
+          );
         }
       },
     );

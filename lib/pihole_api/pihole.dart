@@ -51,8 +51,9 @@ class Pihole {
     );
   }
 
-  Future<Map<String, dynamic>> getData(
-      {Map<String, String>? additionalParams}) async {
+  Future<Map<String, dynamic>> getData({
+    Map<String, String>? additionalParams,
+  }) async {
     final response = await get(
       additionalParams: additionalParams,
     );
@@ -114,10 +115,11 @@ class Pihole {
     );
   }
 
-  Future<Map<String, dynamic>> getAllQueries() async {
+  Future<Map<String, dynamic>> getAllQueries({String? forwarddest}) async {
     return await getData(
       additionalParams: {
         'getAllQueries': '100',
+        if (forwarddest != null) 'forwarddest': forwarddest,
         '_': DateTime.timestamp().millisecond.toString(),
       },
     );

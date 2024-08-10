@@ -98,7 +98,7 @@ class TableChart extends StatelessWidget {
                                 StatisticsItem(
                                   Colors.green,
                                   entry.value.toDouble(),
-                                )
+                                ),
                               ],
                               height: 10,
                               borderRadius: 10,
