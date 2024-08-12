@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:pihole_manager/enums/navigation_item.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/widgets/chart_card.dart';
 import 'package:pihole_manager/widgets/clients_data_bar_chart.dart';
@@ -8,9 +9,12 @@ import 'package:pihole_manager/widgets/over_time_data_chart.dart';
 
 class Dashboard extends StatefulWidget {
   final Widget drawer;
+  final Function(NavigationItem) onNavigateTo;
+
   const Dashboard({
     super.key,
     required this.drawer,
+    required this.onNavigateTo,
   });
 
   @override
@@ -41,7 +45,9 @@ class _Dashboard extends State<Dashboard> {
                       (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting ||
                         !snapshot.hasData) {
-                      return Container();
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     }
                     Map<String, dynamic> data = snapshot.data!;
 
@@ -51,39 +57,52 @@ class _Dashboard extends State<Dashboard> {
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        SizedBox(
-                          width: (size.width - 40) / 2,
-                          child: InfoCard(
-                            title: 'Total queries',
-                            text: data['dns_queries_today'] ?? '',
-                            color: Colors.blue,
-                            icon: Icons.query_stats,
-                            iconColor: Colors.blue.shade700.withOpacity(0.5),
-                            infoText:
-                                '${data['unique_clients'] ?? 0} active clients',
+                        InkWell(
+                          child: SizedBox(
+                            width: (size.width - 40) / 2,
+                            child: InfoCard(
+                              title: 'Total queries',
+                              text: data['dns_queries_today'] ?? '',
+                              color: Colors.blue,
+                              icon: Icons.query_stats,
+                              iconColor: Colors.blue.shade700.withOpacity(0.5),
+                              infoText:
+                                  '${data['unique_clients'] ?? 0} active clients',
+                            ),
                           ),
+                          onTap: () =>
+                              widget.onNavigateTo(NavigationItem.network),
                         ),
-                        SizedBox(
-                          width: (size.width - 40) / 2,
-                          child: InfoCard(
-                            title: 'Queries blocked',
-                            text: data['ads_blocked_today'] ?? '',
-                            color: Colors.red,
-                            icon: Icons.back_hand,
-                            iconColor: Colors.red.shade700.withOpacity(0.5),
-                            infoText: 'List blocked queries',
+                        InkWell(
+                          child: SizedBox(
+                            width: (size.width - 40) / 2,
+                            child: InfoCard(
+                              title: 'Queries blocked',
+                              text: data['ads_blocked_today'] ?? '',
+                              color: Colors.red,
+                              icon: Icons.back_hand,
+                              iconColor: Colors.red.shade700.withOpacity(0.5),
+                              infoText: 'List blocked queries',
+                            ),
                           ),
+                          onTap: () => widget
+                              .onNavigateTo(NavigationItem.queryLogBlocked),
                         ),
-                        SizedBox(
-                          width: (size.width - 40) / 2,
-                          child: InfoCard(
-                            title: 'Percentage blocked',
-                            text: '${data['ads_percentage_today'] ?? '0.0'}%',
-                            color: Colors.orange,
-                            icon: Icons.pie_chart,
-                            iconColor: Colors.orange.shade700.withOpacity(0.5),
-                            infoText: 'List all queries',
+                        InkWell(
+                          child: SizedBox(
+                            width: (size.width - 40) / 2,
+                            child: InfoCard(
+                              title: 'Percentage blocked',
+                              text: '${data['ads_percentage_today'] ?? '0.0'}%',
+                              color: Colors.orange,
+                              icon: Icons.pie_chart,
+                              iconColor:
+                                  Colors.orange.shade700.withOpacity(0.5),
+                              infoText: 'List all queries',
+                            ),
                           ),
+                          onTap: () =>
+                              widget.onNavigateTo(NavigationItem.queryLog),
                         ),
                         SizedBox(
                           width: (size.width - 40) / 2,

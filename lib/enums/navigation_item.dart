@@ -3,4 +3,5 @@ enum NavigationItem {
   queryLog,
   queryLogBlocked,
   topLists,
+  network,
 }

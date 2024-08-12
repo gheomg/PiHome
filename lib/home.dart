@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pihole_manager/dashboard.dart';
+import 'package:pihole_manager/enums/navigation_item.dart';
+import 'package:pihole_manager/network.dart';
 import 'package:pihole_manager/query_log.dart';
 import 'package:pihole_manager/top_lists.dart';
 import 'package:pihole_manager/widgets/my_drawer.dart';
@@ -35,6 +37,7 @@ class _HomeState extends State<Home> {
       case 0:
         return Dashboard(
           drawer: myDrawer,
+          onNavigateTo: _onNavigateTo,
         );
       case 1:
         return QueryLog(
@@ -49,8 +52,16 @@ class _HomeState extends State<Home> {
         return TopLists(
           drawer: myDrawer,
         );
+      case 4:
+        return Network(
+          drawer: myDrawer,
+        );
       default:
         return Container();
     }
+  }
+
+  void _onNavigateTo(NavigationItem item) {
+    onSelectionChanged(item.index);
   }
 }

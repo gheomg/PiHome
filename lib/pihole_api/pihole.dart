@@ -39,14 +39,30 @@ class Pihole {
     dio = Dio(BaseOptions(baseUrl: '${protocol.getString()}://$address'));
   }
 
+  bool isDBApi(String apiName) {
+    switch (apiName) {
+      case 'network':
+        return true;
+      default:
+        return false;
+    }
+  }
+
   Future<Response> get({Map<String, String>? additionalParams}) async {
     Map<String, dynamic> params = {
       'auth': token,
     };
     if (additionalParams != null) params.addAll(additionalParams);
 
+    bool isApi = params.keys
+        .firstWhere(
+          (element) => isDBApi(element),
+          orElse: () => '',
+        )
+        .isEmpty;
+
     return await dio!.get(
-      '/admin/api.php',
+      '/admin/${isApi ? 'api' : 'api_db'}.php',
       queryParameters: params,
     );
   }
@@ -138,6 +154,15 @@ class Pihole {
     return await getData(
       additionalParams: {
         'overTimeData10mins': '',
+      },
+    );
+  }
+
+  Future<Map<String, dynamic>> getNetwork() async {
+    return await getData(
+      additionalParams: {
+        'network': '',
+        '_': DateTime.timestamp().millisecond.toString(),
       },
     );
   }

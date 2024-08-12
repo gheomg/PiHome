@@ -75,6 +75,18 @@ class MyDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
+          const CustomDivider(),
+          ListTile(
+            title: const Text('Network'),
+            leading: const Icon(
+              Icons.lan_rounded,
+            ),
+            selected: selectedIndex == NavigationItem.network.index,
+            onTap: () {
+              onSelectionChanged(NavigationItem.network.index);
+              Navigator.pop(context);
+            },
+          ),
         ],
       ),
     );

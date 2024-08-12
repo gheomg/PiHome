@@ -26,7 +26,7 @@ class _QueryLogState extends State<QueryLog> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Query log ${(widget.showBlocked ?? false) ? '(blocked)' : ''}',
+          (widget.showBlocked ?? false) ? 'Queries blocked' : 'Query log',
         ),
         actions: [
           Builder(
@@ -80,7 +80,11 @@ class _QueryLogState extends State<QueryLog> {
           forwarddest: (widget.showBlocked ?? false) ? 'blocked' : null,
         ),
         builder: (context, snapshot) {
-          if (snapshot.data == null) return Container();
+          if (snapshot.data == null) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
           List<dynamic> data = snapshot.data!['data'] ?? [];
           data.sort(
