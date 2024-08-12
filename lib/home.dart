@@ -15,6 +15,7 @@ class _HomeState extends State<Home> {
 
   MyDrawer get myDrawer => MyDrawer(
         onSelectionChanged: onSelectionChanged,
+        selectedIndex: selectedIndex,
       );
 
   void onSelectionChanged(int index) {

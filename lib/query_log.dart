@@ -29,14 +29,52 @@ class _QueryLogState extends State<QueryLog> {
           'Query log ${(widget.showBlocked ?? false) ? '(blocked)' : ''}',
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.filter_list),
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            onPressed: () {},
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: const Icon(Icons.more_vert),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                onPressed: () => Scaffold.of(context).openEndDrawer(),
+              );
+            },
           ),
         ],
       ),
       drawer: widget.drawer,
+      endDrawer: Drawer(
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              child: Text(
+                'Filter',
+                style: TextStyle(
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: const Text('Total number of records'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Records per page'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Status'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
       body: FutureBuilder(
         future: pihole.getAllQueries(
           forwarddest: (widget.showBlocked ?? false) ? 'blocked' : null,
