@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
-import 'package:pihole_manager/widgets/clients_data_bar_chart.dart';
 import 'package:pihole_manager/widgets/chart_card.dart';
+import 'package:pihole_manager/widgets/clients_data_bar_chart.dart';
 import 'package:pihole_manager/widgets/info_card.dart';
 import 'package:pihole_manager/widgets/over_time_data_chart.dart';
-import 'package:pihole_manager/widgets/table_chart.dart';
 
 class Dashboard extends StatefulWidget {
   final Widget drawer;
@@ -146,78 +145,6 @@ class _Dashboard extends State<Dashboard> {
                     return ChartCard(
                       dataMap: dataMap,
                       title: 'Upstream servers',
-                    );
-                  },
-                ),
-                FutureBuilder(
-                  future: pihole.getTopItems(),
-                  builder:
-                      (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        !snapshot.hasData) {
-                      return Container();
-                    }
-                    Map<String, dynamic> data = snapshot.data!;
-                    Map<String, dynamic> topQueries = data['top_queries'];
-
-                    return TableChart(
-                      data: topQueries,
-                      title: 'Top Permitted Domains',
-                      infoLabel: 'Hits',
-                    );
-                  },
-                ),
-                FutureBuilder(
-                  future: pihole.getTopItems(),
-                  builder:
-                      (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        !snapshot.hasData) {
-                      return Container();
-                    }
-                    Map<String, dynamic> data = snapshot.data!;
-                    Map<String, dynamic> topAds = data['top_ads'];
-
-                    return TableChart(
-                      data: topAds,
-                      title: 'Top Blocked Domains',
-                      infoLabel: 'Hits',
-                    );
-                  },
-                ),
-                FutureBuilder(
-                  future: pihole.getQuerySources(),
-                  builder:
-                      (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        !snapshot.hasData) {
-                      return Container();
-                    }
-                    Map<String, dynamic> data = snapshot.data!;
-                    Map<String, dynamic> topAds = data['top_sources'];
-
-                    return TableChart(
-                      data: topAds,
-                      title: 'Top Clients (total)',
-                      infoLabel: 'Requests',
-                    );
-                  },
-                ),
-                FutureBuilder(
-                  future: pihole.topClientsBlocked(),
-                  builder:
-                      (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting ||
-                        !snapshot.hasData) {
-                      return Container();
-                    }
-                    Map<String, dynamic> data = snapshot.data!;
-                    Map<String, dynamic> topAds = data['top_sources_blocked'];
-
-                    return TableChart(
-                      data: topAds,
-                      title: 'Top Clients (blocked only)',
-                      infoLabel: 'Requests',
                     );
                   },
                 ),

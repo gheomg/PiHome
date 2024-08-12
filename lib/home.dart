@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pihole_manager/dashboard.dart';
 import 'package:pihole_manager/query_log.dart';
+import 'package:pihole_manager/top_lists.dart';
 import 'package:pihole_manager/widgets/my_drawer.dart';
 
 class Home extends StatefulWidget {
@@ -43,6 +44,10 @@ class _HomeState extends State<Home> {
         return QueryLog(
           drawer: myDrawer,
           showBlocked: true,
+        );
+      case 3:
+        return TopLists(
+          drawer: myDrawer,
         );
       default:
         return Container();

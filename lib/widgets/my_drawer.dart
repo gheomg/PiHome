@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pihole_manager/enums/navigation_item.dart';
+import 'package:pihole_manager/widgets/custom_divider.dart';
 
 class MyDrawer extends StatelessWidget {
   final Function(int) onSelectionChanged;
@@ -23,7 +24,7 @@ class MyDrawer extends StatelessWidget {
               color: Colors.greenAccent,
             ),
             child: Text(
-              'Pi-Hole',
+              'PiHome',
               style: TextStyle(
                 fontSize: 24,
               ),
@@ -40,10 +41,7 @@ class MyDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          const Divider(
-            thickness: 0.5,
-            color: Colors.black12,
-          ),
+          const CustomDivider(),
           ListTile(
             title: const Text('Query log'),
             leading: const Icon(
@@ -66,57 +64,16 @@ class MyDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          const Divider(
-            thickness: 0.5,
-            color: Colors.black12,
-          ),
           ListTile(
-            title: const Text('Groups'),
+            title: const Text('Top lists'),
             leading: const Icon(
               Icons.group_rounded,
             ),
-            selected: selectedIndex == NavigationItem.groups.index,
+            selected: selectedIndex == NavigationItem.topLists.index,
             onTap: () {
-              onSelectionChanged(NavigationItem.groups.index);
+              onSelectionChanged(NavigationItem.topLists.index);
               Navigator.pop(context);
             },
-          ),
-          ListTile(
-            title: const Text('Clients'),
-            leading: const Icon(
-              Icons.laptop_rounded,
-            ),
-            selected: selectedIndex == NavigationItem.clients.index,
-            onTap: () {
-              onSelectionChanged(NavigationItem.clients.index);
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Domains'),
-            leading: const Icon(
-              Icons.format_list_bulleted_rounded,
-            ),
-            selected: selectedIndex == NavigationItem.domains.index,
-            onTap: () {
-              onSelectionChanged(NavigationItem.domains.index);
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: const Text('Adlist'),
-            leading: const Icon(
-              Icons.shield_rounded,
-            ),
-            selected: selectedIndex == NavigationItem.adlist.index,
-            onTap: () {
-              onSelectionChanged(NavigationItem.adlist.index);
-              Navigator.pop(context);
-            },
-          ),
-          const Divider(
-            thickness: 0.5,
-            color: Colors.black12,
           ),
         ],
       ),
