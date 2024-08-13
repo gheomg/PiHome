@@ -29,7 +29,6 @@ class _QueryLogState extends State<QueryLog> {
     super.initState();
 
     _scrollController.addListener(() {
-      print(_scrollController.position.pixels);
       if (_scrollController.position.pixels > 50 && !_isScrollToTop.value) {
         _isScrollToTop.value = true;
       }
