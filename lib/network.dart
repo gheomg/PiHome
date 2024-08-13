@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
@@ -17,6 +18,23 @@ class Network extends StatefulWidget {
 class _NetworkState extends State<Network> {
   Pihole pihole = GetIt.instance.get<Pihole>();
 
+  final ScrollController _scrollController = ScrollController();
+  final ValueNotifier<bool> _isScrollToTop = ValueNotifier<bool>(false);
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels > 50 && !_isScrollToTop.value) {
+        _isScrollToTop.value = true;
+      }
+      if (_scrollController.position.pixels < 50 && _isScrollToTop.value) {
+        _isScrollToTop.value = false;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +44,20 @@ class _NetworkState extends State<Network> {
         ),
       ),
       drawer: widget.drawer,
+      floatingActionButton: ValueListenableBuilder(
+        valueListenable: _isScrollToTop,
+        builder: (context, value, child) {
+          if (!value) return Container();
+          return FloatingActionButton(
+            onPressed: () => _scrollController.animateTo(
+              _scrollController.position.minScrollExtent,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.decelerate,
+            ),
+            child: const Icon(Icons.arrow_upward),
+          );
+        },
+      ),
       body: FutureBuilder(
         future: pihole.getNetwork(),
         builder: (context, snapshot) {
@@ -43,6 +75,7 @@ class _NetworkState extends State<Network> {
           network.sort((a, b) => b['lastQuery'].compareTo(a['lastQuery']));
 
           return ListView.builder(
+            controller: _scrollController,
             itemCount: network.length,
             itemBuilder: (context, index) {
               Map<String, dynamic> itemData = network[index];
@@ -165,5 +198,11 @@ class _NetworkState extends State<Network> {
     }
 
     return cardColor;
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }

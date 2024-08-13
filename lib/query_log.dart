@@ -21,6 +21,24 @@ class QueryLog extends StatefulWidget {
 class _QueryLogState extends State<QueryLog> {
   Pihole pihole = GetIt.instance.get<Pihole>();
 
+  final ScrollController _scrollController = ScrollController();
+  final ValueNotifier<bool> _isScrollToTop = ValueNotifier<bool>(false);
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      print(_scrollController.position.pixels);
+      if (_scrollController.position.pixels > 50 && !_isScrollToTop.value) {
+        _isScrollToTop.value = true;
+      }
+      if (_scrollController.position.pixels < 50 && _isScrollToTop.value) {
+        _isScrollToTop.value = false;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +59,20 @@ class _QueryLogState extends State<QueryLog> {
         ],
       ),
       drawer: widget.drawer,
+      floatingActionButton: ValueListenableBuilder(
+        valueListenable: _isScrollToTop,
+        builder: (context, value, child) {
+          if (!value) return Container();
+          return FloatingActionButton(
+            onPressed: () => _scrollController.animateTo(
+              _scrollController.position.minScrollExtent,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.decelerate,
+            ),
+            child: const Icon(Icons.arrow_upward),
+          );
+        },
+      ),
       endDrawer: Drawer(
         child: ListView(
           shrinkWrap: true,
@@ -95,6 +127,7 @@ class _QueryLogState extends State<QueryLog> {
           );
 
           return ListView.builder(
+            controller: _scrollController,
             itemCount: data.length,
             itemBuilder: (context, index) {
               dynamic item = data.elementAt(index);
@@ -158,5 +191,11 @@ class _QueryLogState extends State<QueryLog> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
