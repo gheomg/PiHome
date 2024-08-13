@@ -6,6 +6,7 @@ import 'package:pihole_manager/globals.dart';
 import 'package:pihole_manager/models/server_details.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/widgets/custom_text_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddPi extends StatefulWidget {
   final ServerDetails? server;
@@ -69,7 +70,7 @@ class _AddPi extends State<AddPi> {
     return Scaffold(
       body: Scaffold(
         appBar: AppBar(
-          title: const Text('New connection'),
+          title: Text(AppLocalizations.of(context)?.newConnection ?? ''),
           centerTitle: false,
           actions: [
             if (server != null)
@@ -98,9 +99,9 @@ class _AddPi extends State<AddPi> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const Text(
-                          'Server information',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)?.serverInfo ?? '',
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 22,
                           ),
@@ -126,16 +127,16 @@ class _AddPi extends State<AddPi> {
                     padding: const EdgeInsets.all(8.0),
                     child: SegmentedButton<Protocol>(
                       multiSelectionEnabled: false,
-                      segments: const <ButtonSegment<Protocol>>[
+                      segments: <ButtonSegment<Protocol>>[
                         ButtonSegment<Protocol>(
                           value: Protocol.http,
-                          label: Text('HTTP'),
-                          icon: Icon(Icons.lock_open_rounded),
+                          label: Text(Protocol.http.getString().toUpperCase()),
+                          icon: const Icon(Icons.lock_open_rounded),
                         ),
                         ButtonSegment<Protocol>(
                           value: Protocol.https,
-                          label: Text('HTTPS'),
-                          icon: Icon(Icons.https),
+                          label: Text(Protocol.https.getString().toUpperCase()),
+                          icon: const Icon(Icons.https),
                         ),
                       ],
                       selected: <Protocol>{protocol},
@@ -149,7 +150,7 @@ class _AddPi extends State<AddPi> {
                     padding: const EdgeInsets.all(8.0),
                     child: CustomTextField(
                       controller: _hostController,
-                      label: 'Host address',
+                      label: AppLocalizations.of(context)?.hostAddress,
                       icon: Icons.developer_board_rounded,
                       enabled: server == null,
                     ),
@@ -158,7 +159,7 @@ class _AddPi extends State<AddPi> {
                     padding: const EdgeInsets.all(8.0),
                     child: CustomTextField(
                       controller: _portController,
-                      label: 'Port',
+                      label: AppLocalizations.of(context)?.port,
                       icon: Icons.numbers,
                       keyboardType: TextInputType.number,
                       enabled: server == null,
@@ -168,7 +169,7 @@ class _AddPi extends State<AddPi> {
                     padding: const EdgeInsets.all(8.0),
                     child: CustomTextField(
                       controller: _nameController,
-                      label: 'Name',
+                      label: AppLocalizations.of(context)?.name,
                       icon: Icons.edit,
                       keyboardType: TextInputType.text,
                     ),
@@ -178,11 +179,11 @@ class _AddPi extends State<AddPi> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Authentication',
-                      style: TextStyle(
+                      AppLocalizations.of(context)?.authentication ?? '',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 22,
                       ),
@@ -214,9 +215,9 @@ class _AddPi extends State<AddPi> {
                       padding: const EdgeInsets.all(8.0),
                       child: CustomTextField(
                         controller: _tokenController,
-                        label: 'Token',
+                        label: AppLocalizations.of(context)?.tokenLabel,
                         helperText:
-                            'In the Pi-hole web interface, go to Settings > API/Web interface to find the API token.',
+                            AppLocalizations.of(context)?.tokenDescription,
                         icon: Icons.code,
                         keyboardType: TextInputType.text,
                         autocorrect: false,
@@ -230,7 +231,7 @@ class _AddPi extends State<AddPi> {
                       padding: const EdgeInsets.all(8.0),
                       child: CustomTextField(
                         controller: _userController,
-                        label: 'User',
+                        label: AppLocalizations.of(context)?.user,
                         icon: Icons.person,
                         keyboardType: TextInputType.text,
                       ),
@@ -243,7 +244,7 @@ class _AddPi extends State<AddPi> {
                       padding: const EdgeInsets.all(8.0),
                       child: CustomTextField(
                         controller: _passController,
-                        label: 'Password',
+                        label: AppLocalizations.of(context)?.password,
                         icon: Icons.password_rounded,
                         keyboardType: TextInputType.text,
                         autocorrect: false,
@@ -270,7 +271,9 @@ class _AddPi extends State<AddPi> {
                               WidgetStatePropertyAll(Colors.grey.shade400),
                         )
                       : null,
-                  child: const Text('SAVE'),
+                  child: Text(
+                    (AppLocalizations.of(context)?.save ?? '').toUpperCase(),
+                  ),
                 ),
               ),
             ],
@@ -308,7 +311,7 @@ class _AddPi extends State<AddPi> {
           snackBarKey.currentState?.showSnackBar(
             SnackBar(
               content: Text(
-                'Could not access the RaspberryPi hosted at ${piHole.address}',
+                '${AppLocalizations.of(context)?.couldNotConnect} ${piHole.address}',
                 style: const TextStyle(
                   fontSize: 16,
                 ),

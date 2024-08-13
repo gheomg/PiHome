@@ -6,6 +6,7 @@ import 'package:pihole_manager/models/server_details.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/servers/add_pi.dart';
 import 'package:pihole_manager/widgets/server_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServerList extends StatefulWidget {
   const ServerList({super.key});
@@ -33,7 +34,7 @@ class _ServerListState extends State<ServerList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Servers'),
+        title: Text(AppLocalizations.of(context)?.servers ?? ''),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: onPressed,

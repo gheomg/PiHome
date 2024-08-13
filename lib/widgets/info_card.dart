@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class InfoCard extends StatelessWidget {
-  final String title;
-  final String text;
+  final String? title;
+  final String? text;
   final Color color;
   final IconData icon;
   final Color iconColor;
-  final String infoText;
+  final String? infoText;
 
   const InfoCard({
     super.key,
@@ -60,14 +60,14 @@ class InfoCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      title ?? '',
                       style: const TextStyle(
                         overflow: TextOverflow.ellipsis,
                         color: Colors.white,
                       ),
                     ),
                     Text(
-                      text,
+                      text ?? '',
                       style: const TextStyle(
                         overflow: TextOverflow.ellipsis,
                         color: Colors.white,
@@ -92,7 +92,7 @@ class InfoCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    infoText,
+                    infoText ?? '',
                     textAlign: TextAlign.end,
                     style: const TextStyle(
                       color: Colors.white,

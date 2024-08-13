@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pihole_manager/models/server_details.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServerCard extends StatefulWidget {
   final ServerDetails server;
@@ -66,9 +67,9 @@ class _ServerCardState extends State<ServerCard> {
                     elevation: WidgetStatePropertyAll(0),
                   ),
                   onPressed: widget.onPressed,
-                  child: const Text(
-                    'Edit',
-                    style: TextStyle(
+                  child: Text(
+                    AppLocalizations.of(context)?.edit ?? '',
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),
@@ -78,15 +79,15 @@ class _ServerCardState extends State<ServerCard> {
                 ),
                 ElevatedButton(
                   onPressed: widget.onConnect,
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 5.0),
                         child: Icon(Icons.link_rounded),
                       ),
                       Text(
-                        'Connect',
-                        style: TextStyle(
+                        AppLocalizations.of(context)?.connect ?? '',
+                        style: const TextStyle(
                           fontSize: 16,
                         ),
                       ),

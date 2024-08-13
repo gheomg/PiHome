@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/widgets/table_chart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TopLists extends StatefulWidget {
   final Widget drawer;
@@ -21,7 +22,7 @@ class _TopListsState extends State<TopLists> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Top lists'),
+        title: Text(AppLocalizations.of(context)?.topLists ?? ''),
       ),
       drawer: widget.drawer,
       body: SafeArea(
@@ -45,8 +46,10 @@ class _TopListsState extends State<TopLists> {
 
                     return TableChart(
                       data: topQueries,
-                      title: 'Top Permitted Domains',
-                      infoLabel: 'Hits',
+                      title:
+                          AppLocalizations.of(context)?.topPermittedDomains ??
+                              '',
+                      infoLabel: AppLocalizations.of(context)?.hits ?? '',
                     );
                   },
                 ),
@@ -63,8 +66,9 @@ class _TopListsState extends State<TopLists> {
 
                     return TableChart(
                       data: topAds,
-                      title: 'Top Blocked Domains',
-                      infoLabel: 'Hits',
+                      title:
+                          AppLocalizations.of(context)?.topBlockedDomains ?? '',
+                      infoLabel: AppLocalizations.of(context)?.hits ?? '',
                     );
                   },
                 ),
@@ -81,8 +85,9 @@ class _TopListsState extends State<TopLists> {
 
                     return TableChart(
                       data: topAds,
-                      title: 'Top Clients (total)',
-                      infoLabel: 'Requests',
+                      title:
+                          AppLocalizations.of(context)?.topClientsTotal ?? '',
+                      infoLabel: AppLocalizations.of(context)?.requests ?? '',
                     );
                   },
                 ),
@@ -99,8 +104,9 @@ class _TopListsState extends State<TopLists> {
 
                     return TableChart(
                       data: topAds,
-                      title: 'Top Clients (blocked only)',
-                      infoLabel: 'Requests',
+                      title:
+                          AppLocalizations.of(context)?.topClientsBlocked ?? '',
+                      infoLabel: AppLocalizations.of(context)?.requests ?? '',
                     );
                   },
                 ),

@@ -77,7 +77,7 @@ class ChartCard extends StatelessWidget {
   List<Series<ChartData, String>> _createSampleData() {
     return [
       Series<ChartData, String>(
-        id: 'Sales',
+        id: 'ChartData',
         domainFn: (ChartData data, index) => data.name.split('|').last,
         measureFn: (ChartData data, _) => data.value,
         colorFn: (_, int? index) =>

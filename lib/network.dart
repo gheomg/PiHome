@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Network extends StatefulWidget {
   final Widget drawer;
@@ -38,8 +39,8 @@ class _NetworkState extends State<Network> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Network',
+        title: Text(
+          AppLocalizations.of(context)?.network ?? '',
         ),
       ),
       drawer: widget.drawer,
@@ -115,15 +116,17 @@ class _NetworkState extends State<Network> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'MAC Address: ${itemData['hwaddr'] ?? ''}',
+                        '${AppLocalizations.of(context)?.macAddress}: ${itemData['hwaddr'] ?? ''}',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const SizedBox(height: 2),
-                      Text('Interface: ${itemData['interface'] ?? ''}'),
-                      const Text('IP Addresses:'),
+                      Text(
+                        '${AppLocalizations.of(context)?.interface}: ${itemData['interface'] ?? ''}',
+                      ),
+                      Text('${AppLocalizations.of(context)?.ipAddresses}:'),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: ips.map(
@@ -143,7 +146,7 @@ class _NetworkState extends State<Network> {
                         ).toList(),
                       ),
                       Text(
-                        'First Seen: ${DateFormat().format(
+                        '${AppLocalizations.of(context)?.firstSeen}: ${DateFormat().format(
                           DateTime.fromMillisecondsSinceEpoch(
                             (int.tryParse(
                                       (itemData['firstSeen'] ?? '').toString(),
@@ -154,15 +157,17 @@ class _NetworkState extends State<Network> {
                         )}',
                       ),
                       Text(
-                        'Last Query: ${DateFormat().format(lastSeen)}',
+                        '${AppLocalizations.of(context)?.lastQuery}: ${DateFormat().format(lastSeen)}',
                         style: const TextStyle(
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Text('Queries Made: ${itemData['numQueries']}'),
+                      Text(
+                        '${AppLocalizations.of(context)?.queriesMade}: ${itemData['numQueries']}',
+                      ),
                       if ((itemData['macVendor'] ?? '').toString().isNotEmpty)
                         Text(
-                          'MAC Vendor: ${itemData['macVendor']}',
+                          '${AppLocalizations.of(context)?.macVendor}: ${itemData['macVendor']}',
                           style: const TextStyle(
                             overflow: TextOverflow.ellipsis,
                           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pihole_manager/enums/navigation_item.dart';
 import 'package:pihole_manager/widgets/custom_divider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyDrawer extends StatelessWidget {
   final Function(int) onSelectionChanged;
@@ -19,19 +20,21 @@ class MyDrawer extends StatelessWidget {
         shrinkWrap: true,
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
+          DrawerHeader(
+            decoration: const BoxDecoration(
               color: Colors.greenAccent,
             ),
             child: Text(
-              'PiHome',
-              style: TextStyle(
+              AppLocalizations.of(context)?.appName ?? '',
+              style: const TextStyle(
                 fontSize: 24,
               ),
             ),
           ),
           ListTile(
-            title: const Text('Dashboard'),
+            title: Text(
+              AppLocalizations.of(context)?.dashboard ?? '',
+            ),
             leading: const Icon(
               Icons.home_rounded,
             ),
@@ -43,7 +46,9 @@ class MyDrawer extends StatelessWidget {
           ),
           const CustomDivider(),
           ListTile(
-            title: const Text('Query log'),
+            title: Text(
+              AppLocalizations.of(context)?.queryLog ?? '',
+            ),
             leading: const Icon(
               Icons.restore_rounded,
             ),
@@ -54,7 +59,9 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Queries blocked'),
+            title: Text(
+              AppLocalizations.of(context)?.queriesBlocked ?? '',
+            ),
             leading: const Icon(
               Icons.lock_reset_rounded,
             ),
@@ -65,7 +72,9 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Top lists'),
+            title: Text(
+              AppLocalizations.of(context)?.topLists ?? '',
+            ),
             leading: const Icon(
               Icons.group_rounded,
             ),
@@ -77,7 +86,9 @@ class MyDrawer extends StatelessWidget {
           ),
           const CustomDivider(),
           ListTile(
-            title: const Text('Network'),
+            title: Text(
+              AppLocalizations.of(context)?.network ?? '',
+            ),
             leading: const Icon(
               Icons.lan_rounded,
             ),

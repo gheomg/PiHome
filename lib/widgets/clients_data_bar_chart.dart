@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pihole_manager/models/clients_data.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/utils/colors_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClientsDataBarChart extends StatefulWidget {
   const ClientsDataBarChart({
@@ -49,7 +50,9 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
               children: [
                 Container(
                   padding: const EdgeInsets.only(top: 4.0, left: 8.0),
-                  child: const Text('Client activity'),
+                  child: Text(
+                    AppLocalizations.of(context)?.clientActivity ?? '',
+                  ),
                 ),
                 const Divider(
                   thickness: 0.5,
@@ -116,7 +119,7 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
         in overTime.entries.toList().reversed) {
       result.add(
         Series<ClientsData, String>(
-          id: 'ClientDataChart',
+          id: 'ClientsData',
           domainFn: (ClientsData data, _) => DateFormat('HH:mm').format(
             DateTime.fromMillisecondsSinceEpoch(
               (int.tryParse(data.time) ?? 0) * 1000,

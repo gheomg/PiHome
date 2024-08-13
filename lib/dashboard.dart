@@ -6,6 +6,7 @@ import 'package:pihole_manager/widgets/chart_card.dart';
 import 'package:pihole_manager/widgets/clients_data_bar_chart.dart';
 import 'package:pihole_manager/widgets/info_card.dart';
 import 'package:pihole_manager/widgets/over_time_data_chart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Dashboard extends StatefulWidget {
   final Widget drawer;
@@ -28,7 +29,7 @@ class _Dashboard extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: Text(AppLocalizations.of(context)?.dashboard ?? ''),
       ),
       drawer: widget.drawer,
       body: SafeArea(
@@ -61,13 +62,13 @@ class _Dashboard extends State<Dashboard> {
                           child: SizedBox(
                             width: (size.width - 40) / 2,
                             child: InfoCard(
-                              title: 'Total queries',
+                              title: AppLocalizations.of(context)?.totalQueries,
                               text: data['dns_queries_today'] ?? '',
                               color: Colors.blue,
                               icon: Icons.query_stats,
                               iconColor: Colors.blue.shade700.withOpacity(0.5),
                               infoText:
-                                  '${data['unique_clients'] ?? 0} active clients',
+                                  '${data['unique_clients'] ?? 0} ${AppLocalizations.of(context)?.activeClients}',
                             ),
                           ),
                           onTap: () =>
@@ -77,12 +78,14 @@ class _Dashboard extends State<Dashboard> {
                           child: SizedBox(
                             width: (size.width - 40) / 2,
                             child: InfoCard(
-                              title: 'Queries blocked',
+                              title:
+                                  AppLocalizations.of(context)?.queriesBlocked,
                               text: data['ads_blocked_today'] ?? '',
                               color: Colors.red,
                               icon: Icons.back_hand,
                               iconColor: Colors.red.shade700.withOpacity(0.5),
-                              infoText: 'List blocked queries',
+                              infoText: AppLocalizations.of(context)
+                                  ?.listAllBlockedQueries,
                             ),
                           ),
                           onTap: () => widget
@@ -92,13 +95,15 @@ class _Dashboard extends State<Dashboard> {
                           child: SizedBox(
                             width: (size.width - 40) / 2,
                             child: InfoCard(
-                              title: 'Percentage blocked',
+                              title: AppLocalizations.of(context)
+                                  ?.percentageBlocked,
                               text: '${data['ads_percentage_today'] ?? '0.0'}%',
                               color: Colors.orange,
                               icon: Icons.pie_chart,
                               iconColor:
                                   Colors.orange.shade700.withOpacity(0.5),
-                              infoText: 'List all queries',
+                              infoText:
+                                  AppLocalizations.of(context)?.listAllQueries,
                             ),
                           ),
                           onTap: () =>
@@ -107,12 +112,14 @@ class _Dashboard extends State<Dashboard> {
                         SizedBox(
                           width: (size.width - 40) / 2,
                           child: InfoCard(
-                            title: 'Domains on Adlists',
+                            title:
+                                AppLocalizations.of(context)?.domainsOnAdlist,
                             text: data['domains_being_blocked'] ?? '',
                             color: Colors.green,
                             icon: Icons.format_list_bulleted_outlined,
                             iconColor: Colors.green.shade700.withOpacity(0.5),
-                            infoText: 'Manage adlists',
+                            infoText:
+                                AppLocalizations.of(context)?.manageAdlist,
                           ),
                         ),
                       ],

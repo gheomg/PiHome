@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pihole_manager/models/clients_data.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/utils/colors_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OverTimeDataChart extends StatefulWidget {
   const OverTimeDataChart({super.key});
@@ -47,7 +48,7 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
               children: [
                 Container(
                   padding: const EdgeInsets.only(top: 4.0, left: 8.0),
-                  child: const Text('Top queries'),
+                  child: Text(AppLocalizations.of(context)?.topQueries ?? ''),
                 ),
                 const Divider(
                   thickness: 0.5,

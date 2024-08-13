@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/widgets/log_status.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class QueryLog extends StatefulWidget {
   final Widget drawer;
@@ -43,7 +44,9 @@ class _QueryLogState extends State<QueryLog> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          (widget.showBlocked ?? false) ? 'Queries blocked' : 'Query log',
+          (widget.showBlocked ?? false)
+              ? AppLocalizations.of(context)?.queriesBlocked ?? ''
+              : AppLocalizations.of(context)?.queryLog ?? '',
         ),
         actions: [
           Builder(

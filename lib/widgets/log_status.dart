@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LogStatus extends StatelessWidget {
   final String status;
@@ -15,119 +16,119 @@ class LogStatus extends StatelessWidget {
         return logStatusWidget(
           icon: Icons.gpp_bad_rounded,
           color: Colors.red,
-          text: 'Blocked (gravity)',
+          text: AppLocalizations.of(context)?.logStatusBlockedGravity,
         );
 
       case '2':
         return logStatusWidget(
           icon: Icons.verified_user_rounded,
           color: Colors.green,
-          text: 'OK (forwarded)',
+          text: AppLocalizations.of(context)?.logStatusOKForwarded,
         );
 
       case '3':
         return logStatusWidget(
           icon: Icons.verified_user_rounded,
           color: Colors.green,
-          text: 'OK (cache)',
+          text: AppLocalizations.of(context)?.logStatusOKCache,
         );
 
       case '4':
         return logStatusWidget(
           icon: Icons.gpp_bad_rounded,
           color: Colors.red,
-          text: 'Blocked (regex blacklist)',
+          text: AppLocalizations.of(context)?.logStatusBlockedRegexBlack,
         );
 
       case '5':
         return logStatusWidget(
           icon: Icons.gpp_bad_rounded,
           color: Colors.red,
-          text: 'Blocked (exact blacklist)',
+          text: AppLocalizations.of(context)?.logStatusBlockedBlack,
         );
 
       case '6':
         return logStatusWidget(
           icon: Icons.gpp_bad_rounded,
           color: Colors.red,
-          text: 'Blocked (external, IP)',
+          text: AppLocalizations.of(context)?.logStatusBlockedExternalIP,
         );
 
       case '7':
         return logStatusWidget(
           icon: Icons.gpp_bad_rounded,
           color: Colors.red,
-          text: 'Blocked (external, NULL)',
+          text: AppLocalizations.of(context)?.logStatusBlockedExternalNull,
         );
 
       case '8':
         return logStatusWidget(
           icon: Icons.gpp_bad_rounded,
           color: Colors.red,
-          text: 'Blocked (external, NXRA)',
+          text: AppLocalizations.of(context)?.logStatusBlockedExternalNxra,
         );
 
       case '9':
         return logStatusWidget(
           icon: Icons.gpp_bad_rounded,
           color: Colors.red,
-          text: 'Blocked (gravity, CNAME)',
+          text: AppLocalizations.of(context)?.logStatusBlockedGravityCName,
         );
 
       case '10':
         return logStatusWidget(
           icon: Icons.gpp_bad_rounded,
           color: Colors.red,
-          text: 'Blocked (regex blacklist, CNAME)',
+          text: AppLocalizations.of(context)?.logStatusBlockedRegexBlackCName,
         );
 
       case '11':
         return logStatusWidget(
           icon: Icons.gpp_bad_rounded,
           color: Colors.red,
-          text: 'Blocked (exact blacklist, CNAME)',
+          text: AppLocalizations.of(context)?.logStatusBlockedBlackCName,
         );
 
       case '12':
         return logStatusWidget(
           icon: Icons.refresh_rounded,
           color: Colors.blue,
-          text: 'Retried',
+          text: AppLocalizations.of(context)?.logStatusRetried,
         );
 
       case '13':
         return logStatusWidget(
           icon: Icons.refresh_rounded,
           color: Colors.blue,
-          text: 'Retried (ignored)',
+          text: AppLocalizations.of(context)?.logStatusRetriedIgnored,
         );
 
       case '14':
         return logStatusWidget(
           icon: Icons.verified_user_rounded,
           color: Colors.green,
-          text: 'OK (already forwarded)',
+          text: AppLocalizations.of(context)?.logStatusOKAlreadyForwarded,
         );
 
       case '15':
         return logStatusWidget(
           icon: Icons.storage_rounded,
           color: Colors.orange,
-          text: 'Database is busy',
+          text: AppLocalizations.of(context)?.logStatusDatabaseBusy,
         );
 
       case '16':
         return logStatusWidget(
           icon: Icons.gpp_bad_rounded,
           color: Colors.orange,
-          text: 'Blocked (special domain)',
+          text: AppLocalizations.of(context)?.logStatusBlockedSpecialDomain,
         );
 
       default:
         return logStatusWidget(
           icon: Icons.shield_rounded,
           color: Colors.grey,
-          text: 'Unknown',
+          text: AppLocalizations.of(context)?.logStatusUnknown,
         );
     }
   }
@@ -135,7 +136,7 @@ class LogStatus extends StatelessWidget {
   Widget logStatusWidget({
     required IconData icon,
     required Color color,
-    required String text,
+    required String? text,
   }) {
     return Row(
       children: [
@@ -148,7 +149,7 @@ class LogStatus extends StatelessWidget {
           ),
         ),
         Text(
-          text,
+          text ?? '',
           style: TextStyle(
             color: color,
             fontWeight: FontWeight.w400,
