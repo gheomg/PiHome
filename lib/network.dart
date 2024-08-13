@@ -73,22 +73,7 @@ class _NetworkState extends State<Network> {
                 end: DateTime.now(),
               );
 
-              Color? cardColor;
-              if (range.duration.inHours <= 1) {
-                cardColor = const Color.fromRGBO(76, 175, 80, 1);
-              } else if (range.duration.inHours <= 2) {
-                cardColor = const Color.fromRGBO(139, 195, 74, 1);
-              } else if (range.duration.inHours <= 12) {
-                cardColor = const Color.fromRGBO(205, 220, 57, 1);
-              } else if (range.duration.inHours <= 24) {
-                cardColor = const Color.fromRGBO(255, 235, 59, 1);
-              } else if (range.duration.inHours > 24) {
-                if (lastQuery == 0) {
-                  cardColor = const Color.fromRGBO(244, 67, 54, 1);
-                } else {
-                  cardColor = const Color.fromRGBO(255, 152, 0, 1);
-                }
-              }
+              Color? cardColor = getCardColor(range, lastQuery);
 
               return Card(
                 color: cardColor,
@@ -159,5 +144,26 @@ class _NetworkState extends State<Network> {
         },
       ),
     );
+  }
+
+  Color? getCardColor(DateTimeRange range, int lastQuery) {
+    Color? cardColor;
+    if (range.duration.inHours <= 1) {
+      cardColor = const Color.fromRGBO(76, 175, 80, 1);
+    } else if (range.duration.inHours <= 2) {
+      cardColor = const Color.fromRGBO(139, 195, 74, 1);
+    } else if (range.duration.inHours <= 12) {
+      cardColor = const Color.fromRGBO(205, 220, 57, 1);
+    } else if (range.duration.inHours <= 24) {
+      cardColor = const Color.fromRGBO(255, 235, 59, 1);
+    } else if (range.duration.inHours > 24) {
+      if (lastQuery == 0) {
+        cardColor = const Color.fromRGBO(244, 67, 54, 1);
+      } else {
+        cardColor = const Color.fromRGBO(255, 152, 0, 1);
+      }
+    }
+
+    return cardColor;
   }
 }

@@ -41,10 +41,12 @@ class _HomeState extends State<Home> {
         );
       case 1:
         return QueryLog(
+          key: const Key('query_log'),
           drawer: myDrawer,
         );
       case 2:
         return QueryLog(
+          key: const Key('query_log_blocked'),
           drawer: myDrawer,
           showBlocked: true,
         );
