@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pihole_manager/globals.dart';
 import 'package:pihole_manager/servers/server_list.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,8 +33,14 @@ class MyApp extends StatelessWidget {
             backgroundColor: WidgetStatePropertyAll(Colors.lightGreen.shade200),
           ),
         ),
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           centerTitle: false,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.dark,
+            systemNavigationBarColor: Colors.lightGreen.shade50,
+          ),
         ),
         useMaterial3: true,
       ),
