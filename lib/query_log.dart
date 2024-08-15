@@ -128,9 +128,11 @@ class _QueryLogState extends State<QueryLog> {
             },
           );
 
-          return ListView.builder(
+          return ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             controller: _scrollController,
             itemCount: data.length,
+            separatorBuilder: (context, index) => const Divider(),
             itemBuilder: (context, index) {
               dynamic item = data.elementAt(index);
               List<String> values = [];
@@ -140,53 +142,39 @@ class _QueryLogState extends State<QueryLog> {
                 }
               }
 
-              return Card(
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              return ListBody(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          LogStatus(
-                            status: values.elementAt(4),
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              DateFormat('HH:mm:ss').format(
-                                DateTime.fromMillisecondsSinceEpoch(
-                                  (int.tryParse(values.elementAt(0)) ?? 0) *
-                                      1000,
-                                ),
-                              ),
+                      LogStatus(
+                        status: values.elementAt(4),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          DateFormat(DateFormat.HOUR_MINUTE_SECOND).format(
+                            DateTime.fromMillisecondsSinceEpoch(
+                              (int.tryParse(values.elementAt(0)) ?? 0) * 1000,
                             ),
                           ),
-                        ],
-                      ),
-                      Text(
-                        values.elementAt(2),
-                        style: const TextStyle(
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            values.elementAt(3),
-                            style: const TextStyle(
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
-                ),
+                  Text(
+                    values.elementAt(2),
+                    style: const TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    values.elementAt(3),
+                    style: TextStyle(
+                      color: Theme.of(context).hintColor,
+                    ),
+                  ),
+                ],
               );
             },
           );

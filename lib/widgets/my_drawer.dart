@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pihole_manager/enums/navigation_item.dart';
-import 'package:pihole_manager/widgets/custom_divider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihole_manager/enums/navigation_item.dart';
 
 class MyDrawer extends StatelessWidget {
   final Function(int) onSelectionChanged;
@@ -26,8 +25,9 @@ class MyDrawer extends StatelessWidget {
             ),
             child: Text(
               AppLocalizations.of(context)?.appName ?? '',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 24,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),
@@ -44,7 +44,7 @@ class MyDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          const CustomDivider(),
+          const Divider(),
           ListTile(
             title: Text(
               AppLocalizations.of(context)?.queryLog ?? '',
@@ -84,7 +84,7 @@ class MyDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          const CustomDivider(),
+          const Divider(),
           ListTile(
             title: Text(
               AppLocalizations.of(context)?.network ?? '',

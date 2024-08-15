@@ -25,7 +25,6 @@ class _ServerCardState extends State<ServerCard> {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -63,7 +62,7 @@ class _ServerCardState extends State<ServerCard> {
               children: [
                 ElevatedButton(
                   style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(Colors.white),
+                    backgroundColor: WidgetStatePropertyAll(Colors.transparent),
                     elevation: WidgetStatePropertyAll(0),
                   ),
                   onPressed: widget.onPressed,

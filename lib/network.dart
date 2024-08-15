@@ -109,6 +109,7 @@ class _NetworkState extends State<Network> {
               Color? cardColor = getCardColor(range, lastQuery);
 
               return Card(
+                margin: const EdgeInsets.all(4.0),
                 color: cardColor,
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),

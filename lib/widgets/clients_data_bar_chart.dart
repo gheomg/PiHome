@@ -28,60 +28,45 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
           (context, AsyncSnapshot<List<Series<ClientsData, String>>> snapshot) {
         return Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: Container(
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(
-                color: Colors.grey.withOpacity(0.5),
-              ),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 3,
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 4.0, left: 8.0),
-                  child: Text(
-                    AppLocalizations.of(context)?.clientActivity ?? '',
+          child: Card(
+            child: SizedBox(
+              height: 200,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 4.0, left: 8.0),
+                    child: Text(
+                      AppLocalizations.of(context)?.clientActivity ?? '',
+                    ),
                   ),
-                ),
-                const Divider(
-                  thickness: 0.5,
-                  color: Colors.black12,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: BarChart(
-                      (snapshot.data ?? []).reversed.toList(),
-                      barGroupingType: BarGroupingType.stacked,
-                      domainAxis: const OrdinalAxisSpec(
-                        renderSpec: SmallTickRendererSpec(
-                          labelStyle: TextStyleSpec(
-                            fontSize: 10,
+                  const Divider(),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: BarChart(
+                        (snapshot.data ?? []).reversed.toList(),
+                        barGroupingType: BarGroupingType.stacked,
+                        domainAxis: const OrdinalAxisSpec(
+                          renderSpec: SmallTickRendererSpec(
+                            labelStyle: TextStyleSpec(
+                              fontSize: 10,
+                            ),
                           ),
                         ),
-                      ),
-                      primaryMeasureAxis: const NumericAxisSpec(
-                        renderSpec: GridlineRendererSpec(
-                          labelStyle: TextStyleSpec(
-                            fontSize: 10,
+                        primaryMeasureAxis: const NumericAxisSpec(
+                          renderSpec: GridlineRendererSpec(
+                            labelStyle: TextStyleSpec(
+                              fontSize: 10,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

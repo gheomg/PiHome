@@ -22,21 +22,7 @@ class TableChart extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            color: Colors.grey.withOpacity(0.5),
-          ),
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 3,
-            ),
-          ],
-        ),
+      child: Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -46,10 +32,7 @@ class TableChart extends StatelessWidget {
               padding: const EdgeInsets.only(top: 4.0, left: 8.0),
               child: Text(title),
             ),
-            const Divider(
-              thickness: 0.5,
-              color: Colors.black12,
-            ),
+            const Divider(),
             Padding(
               padding: const EdgeInsets.only(
                 left: 8.0,
@@ -81,9 +64,9 @@ class TableChart extends StatelessWidget {
                             ),
                             Text(
                               '$infoLabel: ${entry.value.toString()}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
-                                color: Colors.black54,
+                                color: Theme.of(context).hintColor,
                                 fontSize: 12,
                               ),
                             ),
