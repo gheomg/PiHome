@@ -18,7 +18,7 @@ class Pihole {
     this.token,
     this.port = '',
   }) {
-    init();
+    _init();
   }
 
   Pihole.fromServer({required ServerDetails server})
@@ -28,18 +28,18 @@ class Pihole {
         user = server.user,
         password = server.password,
         token = server.authToken {
-    init();
+    _init();
   }
 
   Dio? dio;
 
   String get address => '$host${port!.isNotEmpty ? ':$port' : ''}';
 
-  void init() {
+  void _init() {
     dio = Dio(BaseOptions(baseUrl: '${protocol.getString()}://$address'));
   }
 
-  bool isDBApi(String apiName) {
+  bool _isDBApi(String apiName) {
     switch (apiName) {
       case 'network':
         return true;
@@ -48,7 +48,7 @@ class Pihole {
     }
   }
 
-  Future<Response> get({Map<String, String>? additionalParams}) async {
+  Future<Response> _get({Map<String, String>? additionalParams}) async {
     Map<String, dynamic> params = {
       'auth': token,
     };
@@ -56,7 +56,7 @@ class Pihole {
 
     bool isApi = params.keys
         .firstWhere(
-          (element) => isDBApi(element),
+          (element) => _isDBApi(element),
           orElse: () => '',
         )
         .isEmpty;
@@ -67,10 +67,10 @@ class Pihole {
     );
   }
 
-  Future<Map<String, dynamic>> getData({
+  Future<Map<String, dynamic>> _getData({
     Map<String, String>? additionalParams,
   }) async {
-    final response = await get(
+    final response = await _get(
       additionalParams: additionalParams,
     );
     if (response.statusCode == 200) {
@@ -82,7 +82,7 @@ class Pihole {
 
   Future<bool> checkConnection() async {
     try {
-      final response = await get(
+      final response = await _get(
         additionalParams: {'status': ''},
       );
       if (response.statusCode == 200) {
@@ -96,43 +96,43 @@ class Pihole {
   }
 
   Future<Map<String, dynamic>> getPiHoleSummary() async {
-    return await getData(
+    return await _getData(
       additionalParams: {'summary': ''},
     );
   }
 
   Future<Map<String, dynamic>> getQueryTypes() async {
-    return await getData(
+    return await _getData(
       additionalParams: {'getQueryTypes': ''},
     );
   }
 
   Future<Map<String, dynamic>> getForwardDestinations() async {
-    return await getData(
+    return await _getData(
       additionalParams: {'getForwardDestinations': ''},
     );
   }
 
   Future<Map<String, dynamic>> getTopItems() async {
-    return await getData(
+    return await _getData(
       additionalParams: {'topItems': ''},
     );
   }
 
   Future<Map<String, dynamic>> getQuerySources() async {
-    return await getData(
+    return await _getData(
       additionalParams: {'getQuerySources': ''},
     );
   }
 
   Future<Map<String, dynamic>> topClientsBlocked() async {
-    return await getData(
+    return await _getData(
       additionalParams: {'topClientsBlocked': ''},
     );
   }
 
   Future<Map<String, dynamic>> getAllQueries({String? forwarddest}) async {
-    return await getData(
+    return await _getData(
       additionalParams: {
         'getAllQueries': '100',
         if (forwarddest != null) 'forwarddest': forwarddest,
@@ -142,7 +142,7 @@ class Pihole {
   }
 
   Future<Map<String, dynamic>> getOverTimeDataClients() async {
-    return await getData(
+    return await _getData(
       additionalParams: {
         'overTimeDataClients': '',
         'getClientNames': '',
@@ -151,7 +151,7 @@ class Pihole {
   }
 
   Future<Map<String, dynamic>> getOverTimeData10mins() async {
-    return await getData(
+    return await _getData(
       additionalParams: {
         'overTimeData10mins': '',
       },
@@ -159,7 +159,7 @@ class Pihole {
   }
 
   Future<Map<String, dynamic>> getNetwork() async {
-    return await getData(
+    return await _getData(
       additionalParams: {
         'network': '',
         '_': DateTime.timestamp().millisecond.toString(),

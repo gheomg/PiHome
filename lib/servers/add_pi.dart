@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pihole_manager/database/database_helper.dart';
 import 'package:pihole_manager/enums/authentication_type.dart';
 import 'package:pihole_manager/enums/protocol.dart';
 import 'package:pihole_manager/globals.dart';
+import 'package:pihole_manager/home.dart';
 import 'package:pihole_manager/models/server_details.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
+import 'package:pihole_manager/pihole_api/pihole_dummy.dart';
 import 'package:pihole_manager/widgets/custom_text_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -283,6 +286,25 @@ class _AddPi extends State<AddPi> {
     );
   }
 
+  bool checkDummyPi(ServerDetails server) {
+    if (server.host == 'pihome.dummy' &&
+        server.protocol == Protocol.https &&
+        server.port == '0000' &&
+        server.authToken == 'masterkey') {
+      Pihole pihole = PiholeDummy(protocol: server.protocol, host: server.host);
+      GetIt.instance.registerSingleton<Pihole>(pihole);
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute<ServerDetails>(
+          builder: (BuildContext context) => const Home(),
+        ),
+      );
+
+      return true;
+    }
+    return false;
+  }
+
   Future<void> addConnection() async {
     ServerDetails server = ServerDetails(
       host: _hostController.text,
@@ -293,6 +315,8 @@ class _AddPi extends State<AddPi> {
       user: _userController.text,
       password: _passController.text,
     );
+
+    if (checkDummyPi(server)) return;
 
     Pihole piHole = Pihole(
       host: server.host,
@@ -305,6 +329,7 @@ class _AddPi extends State<AddPi> {
 
     await piHole.checkConnection().then(
       (success) {
+        if (!mounted) return;
         if (success) {
           Navigator.of(context).pop(server);
         } else {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pihole_manager/database/database_helper.dart';
 import 'package:pihole_manager/home.dart';
@@ -6,7 +7,6 @@ import 'package:pihole_manager/models/server_details.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/servers/add_pi.dart';
 import 'package:pihole_manager/widgets/server_card.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServerList extends StatefulWidget {
   const ServerList({super.key});
@@ -82,6 +82,8 @@ class _ServerListState extends State<ServerList> {
       (value) {
         if (value) {
           GetIt.instance.registerSingleton<Pihole>(pihole);
+
+          if (!mounted) return;
 
           Navigator.of(context).pushReplacement(
             MaterialPageRoute<ServerDetails>(
