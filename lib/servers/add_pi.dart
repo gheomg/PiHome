@@ -276,6 +276,11 @@ class _AddPi extends State<AddPi> {
                       : null,
                   child: Text(
                     (AppLocalizations.of(context)?.save ?? '').toUpperCase(),
+                    style: isButtonEnabled
+                        ? null
+                        : TextStyle(
+                            color: Colors.grey.shade800,
+                          ),
                   ),
                 ),
               ),

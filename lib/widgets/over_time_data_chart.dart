@@ -44,17 +44,33 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
                       child: BarChart(
                         (snapshot.data ?? []).reversed.toList(),
                         barGroupingType: BarGroupingType.stacked,
-                        domainAxis: const OrdinalAxisSpec(
+                        domainAxis: OrdinalAxisSpec(
                           renderSpec: SmallTickRendererSpec(
                             labelStyle: TextStyleSpec(
                               fontSize: 10,
+                              color: ColorsUtils.getColor2(
+                                Theme.of(context).hintColor,
+                              ),
+                            ),
+                            lineStyle: LineStyleSpec(
+                              color: ColorsUtils.getColor2(
+                                Theme.of(context).hintColor,
+                              ),
                             ),
                           ),
                         ),
-                        primaryMeasureAxis: const NumericAxisSpec(
+                        primaryMeasureAxis: NumericAxisSpec(
                           renderSpec: GridlineRendererSpec(
                             labelStyle: TextStyleSpec(
                               fontSize: 10,
+                              color: ColorsUtils.getColor2(
+                                Theme.of(context).hintColor,
+                              ),
+                            ),
+                            lineStyle: LineStyleSpec(
+                              color: ColorsUtils.getColor2(
+                                Theme.of(context).hintColor,
+                              ),
                             ),
                           ),
                         ),

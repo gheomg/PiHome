@@ -21,6 +21,11 @@ class _NetworkState extends State<Network> {
   final ScrollController _scrollController = ScrollController();
   final ValueNotifier<bool> _isScrollToTop = ValueNotifier<bool>(false);
 
+  final TextStyle textStyle = const TextStyle(
+    overflow: TextOverflow.ellipsis,
+    color: Colors.black87,
+  );
+
   @override
   void initState() {
     super.initState();
@@ -118,16 +123,19 @@ class _NetworkState extends State<Network> {
                     children: [
                       Text(
                         '${AppLocalizations.of(context)?.macAddress}: ${itemData['hwaddr'] ?? ''}',
-                        style: const TextStyle(
+                        style: textStyle.copyWith(
                           fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
                         '${AppLocalizations.of(context)?.interface}: ${itemData['interface'] ?? ''}',
+                        style: textStyle,
                       ),
-                      Text('${AppLocalizations.of(context)?.ipAddresses}:'),
+                      Text(
+                        '${AppLocalizations.of(context)?.ipAddresses}:',
+                        style: textStyle,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: ips.map(
@@ -139,9 +147,7 @@ class _NetworkState extends State<Network> {
 
                             return Text(
                               '  - $ip$name',
-                              style: const TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                              style: textStyle,
                             );
                           },
                         ).toList(),
@@ -156,22 +162,20 @@ class _NetworkState extends State<Network> {
                                 1000,
                           ),
                         )}',
+                        style: textStyle,
                       ),
                       Text(
                         '${AppLocalizations.of(context)?.lastQuery}: ${DateFormat().format(lastSeen)}',
-                        style: const TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        style: textStyle,
                       ),
                       Text(
                         '${AppLocalizations.of(context)?.queriesMade}: ${itemData['numQueries']}',
+                        style: textStyle,
                       ),
                       if ((itemData['macVendor'] ?? '').toString().isNotEmpty)
                         Text(
                           '${AppLocalizations.of(context)?.macVendor}: ${itemData['macVendor']}',
-                          style: const TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          style: textStyle,
                         ),
                     ],
                   ),

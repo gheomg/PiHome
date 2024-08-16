@@ -20,21 +20,8 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        border: Border.all(
-          color: Colors.grey.withOpacity(0.5),
-        ),
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 3,
-          ),
-        ],
-      ),
+    return Card(
+      color: color,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

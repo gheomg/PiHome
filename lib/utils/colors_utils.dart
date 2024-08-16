@@ -36,4 +36,8 @@ class ColorsUtils {
   static charts.Color getColor(MaterialColor color) {
     return charts.Color(r: color.red, g: color.green, b: color.blue);
   }
+
+  static charts.Color getColor2(Color color) {
+    return charts.Color(r: color.red, g: color.green, b: color.blue);
+  }
 }
