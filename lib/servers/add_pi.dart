@@ -192,33 +192,33 @@ class _AddPi extends State<AddPi> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SegmentedButton<AuthenticationType>(
-                      multiSelectionEnabled: false,
-                      segments: <ButtonSegment<AuthenticationType>>[
-                        ButtonSegment<AuthenticationType>(
-                          value: AuthenticationType.token,
-                          label: Text(AuthenticationType.token.getString()),
-                        ),
-                        ButtonSegment<AuthenticationType>(
-                          value: AuthenticationType.credentials,
-                          label:
-                              Text(AuthenticationType.credentials.getString()),
-                        ),
-                      ],
-                      selected: <AuthenticationType>{authenticationType},
-                      onSelectionChanged: (value) =>
-                          setState(() => authenticationType = value.first),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: SegmentedButton<AuthenticationType>(
+                  //     multiSelectionEnabled: false,
+                  //     segments: <ButtonSegment<AuthenticationType>>[
+                  //       ButtonSegment<AuthenticationType>(
+                  //         value: AuthenticationType.token,
+                  //         label: Text(AuthenticationType.token.getString()),
+                  //       ),
+                  //       ButtonSegment<AuthenticationType>(
+                  //         value: AuthenticationType.credentials,
+                  //         label:
+                  //             Text(AuthenticationType.credentials.getString()),
+                  //       ),
+                  //     ],
+                  //     selected: <AuthenticationType>{authenticationType},
+                  //     onSelectionChanged: (value) =>
+                  //         setState(() => authenticationType = value.first),
+                  //   ),
+                  // ),
                   Visibility(
                     visible: authenticationType == AuthenticationType.token,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CustomTextField(
                         controller: _tokenController,
-                        label: AppLocalizations.of(context)?.tokenLabel,
+                        label: authenticationType.getString(),
                         helperText:
                             AppLocalizations.of(context)?.tokenDescription,
                         icon: Icons.code,
@@ -227,34 +227,34 @@ class _AddPi extends State<AddPi> {
                       ),
                     ),
                   ),
-                  Visibility(
-                    visible:
-                        authenticationType == AuthenticationType.credentials,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomTextField(
-                        controller: _userController,
-                        label: AppLocalizations.of(context)?.user,
-                        icon: Icons.person,
-                        keyboardType: TextInputType.text,
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible:
-                        authenticationType == AuthenticationType.credentials,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomTextField(
-                        controller: _passController,
-                        label: AppLocalizations.of(context)?.password,
-                        icon: Icons.password_rounded,
-                        keyboardType: TextInputType.text,
-                        autocorrect: false,
-                        obscureText: true,
-                      ),
-                    ),
-                  ),
+                  // Visibility(
+                  //   visible:
+                  //       authenticationType == AuthenticationType.credentials,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: CustomTextField(
+                  //       controller: _userController,
+                  //       label: AppLocalizations.of(context)?.user,
+                  //       icon: Icons.person,
+                  //       keyboardType: TextInputType.text,
+                  //     ),
+                  //   ),
+                  // ),
+                  // Visibility(
+                  //   visible:
+                  //       authenticationType == AuthenticationType.credentials,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(8.0),
+                  //     child: CustomTextField(
+                  //       controller: _passController,
+                  //       label: AppLocalizations.of(context)?.password,
+                  //       icon: Icons.password_rounded,
+                  //       keyboardType: TextInputType.text,
+                  //       autocorrect: false,
+                  //       obscureText: true,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ],
