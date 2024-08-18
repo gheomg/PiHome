@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pihole_manager/database/database_helper.dart';
 import 'package:pihole_manager/enums/authentication_type.dart';
 import 'package:pihole_manager/enums/protocol.dart';
@@ -9,7 +11,6 @@ import 'package:pihole_manager/models/server_details.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/pihole_api/pihole_dummy.dart';
 import 'package:pihole_manager/widgets/custom_text_field.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddPi extends StatefulWidget {
   final ServerDetails? server;
@@ -35,6 +36,8 @@ class _AddPi extends State<AddPi> {
   Protocol protocol = Protocol.http;
   AuthenticationType authenticationType = AuthenticationType.token;
   String infoLabel = '';
+
+  final MobileScannerController controller = MobileScannerController();
 
   @override
   void initState() {
@@ -224,6 +227,15 @@ class _AddPi extends State<AddPi> {
                         icon: Icons.code,
                         keyboardType: TextInputType.text,
                         autocorrect: false,
+                        suffix: IconButton(
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          onPressed: scanQR,
+                          icon: const Icon(
+                            Icons.qr_code_scanner_rounded,
+                            semanticLabel: 'QR Scan',
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -288,6 +300,23 @@ class _AddPi extends State<AddPi> {
           ),
         ],
       ),
+    );
+  }
+
+  void scanQR() {
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(
+        builder: (context) => MobileScanner(
+          controller: controller,
+        ),
+      ),
+    )
+        .then(
+      (qrCodeValue) {
+        _tokenController.text = qrCodeValue;
+        _updateInfoLabel();
+      },
     );
   }
 

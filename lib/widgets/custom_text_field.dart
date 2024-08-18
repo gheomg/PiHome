@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -9,6 +11,7 @@ class CustomTextField extends StatelessWidget {
   final bool? autocorrect;
   final bool? obscureText;
   final bool? enabled;
+  final Widget? suffix;
 
   const CustomTextField({
     super.key,
@@ -20,6 +23,7 @@ class CustomTextField extends StatelessWidget {
     this.autocorrect,
     this.obscureText,
     this.enabled,
+    this.suffix,
   });
 
   @override
@@ -41,14 +45,22 @@ class CustomTextField extends StatelessWidget {
           fontSize: 14,
         ),
         helperMaxLines: 3,
-        suffixIcon: controller.text.isNotEmpty
-            ? IconButton(
-                onPressed: () => controller.clear(),
-                icon: const Icon(
-                  Icons.cancel_outlined,
+        suffixIcon: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (controller.text.isNotEmpty)
+                IconButton(
+                  onPressed: () => controller.clear(),
+                  icon: const Icon(
+                    Icons.cancel_outlined,
+                  ),
                 ),
-              )
-            : null,
+              if (suffix != null) suffix!,
+            ],
+          ),
+        ),
       ),
       keyboardType: keyboardType,
       autocorrect: autocorrect ?? true,
