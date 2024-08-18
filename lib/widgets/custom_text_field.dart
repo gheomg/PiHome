@@ -33,6 +33,7 @@ class CustomTextField extends StatelessWidget {
         labelText: label,
         prefixIcon: Icon(
           icon,
+          semanticLabel: label,
         ),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         helperText: helperText,
