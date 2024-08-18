@@ -22,6 +22,7 @@ dependencies:
   community_charts_flutter: ^1.0.4
   icons_launcher: ^2.1.7
   mobile_scanner: ^5.1.1
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:pihole_manager/database/database_helper.dart';
 import 'package:pihole_manager/enums/authentication_type.dart';
 import 'package:pihole_manager/enums/protocol.dart';
@@ -10,6 +11,7 @@ import 'package:pihole_manager/home.dart';
 import 'package:pihole_manager/models/server_details.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/pihole_api/pihole_dummy.dart';
+import 'package:pihole_manager/servers/qr_scanner/barcode_scanner.dart';
 import 'package:pihole_manager/widgets/custom_text_field.dart';
 
 class AddPi extends StatefulWidget {
@@ -24,7 +26,7 @@ class AddPi extends StatefulWidget {
   State<StatefulWidget> createState() => _AddPi();
 }
 
-class _AddPi extends State<AddPi> {
+class _AddPi extends State<AddPi> with WidgetsBindingObserver {
   ServerDetails? get server => widget.server;
 
   final TextEditingController _hostController = TextEditingController();
@@ -36,8 +38,6 @@ class _AddPi extends State<AddPi> {
   Protocol protocol = Protocol.http;
   AuthenticationType authenticationType = AuthenticationType.token;
   String infoLabel = '';
-
-  final MobileScannerController controller = MobileScannerController();
 
   @override
   void initState() {
@@ -307,13 +307,12 @@ class _AddPi extends State<AddPi> {
     Navigator.of(context)
         .push(
       MaterialPageRoute(
-        builder: (context) => MobileScanner(
-          controller: controller,
-        ),
+        builder: (context) => const BarcodeScannerWithOverlay(),
       ),
     )
         .then(
       (qrCodeValue) {
+        if (qrCodeValue == null) return;
         _tokenController.text = qrCodeValue;
         _updateInfoLabel();
       },
