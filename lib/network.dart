@@ -68,7 +68,9 @@ class _NetworkState extends State<Network> {
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: RepaintBoundary(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
 

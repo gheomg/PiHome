@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:pihole_manager/enums/log_status_type.dart';
+import 'package:pihole_manager/enums/number_of_records.dart';
 import 'package:pihole_manager/enums/protocol.dart';
 import 'package:pihole_manager/models/server_details.dart';
 
@@ -39,27 +41,14 @@ class Pihole {
     dio = Dio(BaseOptions(baseUrl: '${protocol.getString()}://$address'));
   }
 
-  bool _isDBApi(String apiName) {
-    switch (apiName) {
-      case 'network':
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  Future<Response> _get({Map<String, String>? additionalParams}) async {
+  Future<Response> _get({
+    Map<String, String>? additionalParams,
+    bool isApi = true,
+  }) async {
     Map<String, dynamic> params = {
       'auth': token,
     };
     if (additionalParams != null) params.addAll(additionalParams);
-
-    bool isApi = params.keys
-        .firstWhere(
-          (element) => _isDBApi(element),
-          orElse: () => '',
-        )
-        .isEmpty;
 
     return await dio!.get(
       '/admin/${isApi ? 'api' : 'api_db'}.php',
@@ -69,9 +58,11 @@ class Pihole {
 
   Future<Map<String, dynamic>> _getData({
     Map<String, String>? additionalParams,
+    bool isApi = true,
   }) async {
     final response = await _get(
       additionalParams: additionalParams,
+      isApi: isApi,
     );
     if (response.statusCode == 200) {
       return response.data as Map<String, dynamic>;
@@ -131,14 +122,42 @@ class Pihole {
     );
   }
 
-  Future<Map<String, dynamic>> getAllQueries({String? forwarddest}) async {
+  Future<Map<String, dynamic>> getAllQueries({
+    String? forwarddest,
+    NumberOfRecords? numberOfRecords,
+  }) async {
     return await _getData(
       additionalParams: {
-        'getAllQueries': '100',
+        'getAllQueries':
+            (numberOfRecords ?? NumberOfRecords.hundred).getValue(),
         if (forwarddest != null) 'forwarddest': forwarddest,
-        '_': DateTime.timestamp().millisecond.toString(),
+        '_': DateTime.timestamp().millisecondsSinceEpoch.toString(),
       },
     );
+  }
+
+  Future<Map<String, dynamic>> getAllQueriesByStatus({
+    LogStatusType? status,
+    NumberOfRecords? numberOfRecords,
+  }) async {
+    final response = await _get(
+      additionalParams: {
+        'getAllQueries':
+            (numberOfRecords ?? NumberOfRecords.hundred).getValue(),
+        '_': DateTime.timestamp().millisecondsSinceEpoch.toString(),
+        if (status != null)
+          'status':
+              '2,14,3,4,5,6,7,8,9,10,11,12,13,15,16,17', // status.getQueryTypes(),
+        'from': '1724446800',
+        'until': '1724529851.341',
+      },
+      isApi: false,
+    );
+    if (response.statusCode == 200) {
+      return response.data as Map<String, dynamic>;
+    } else {
+      return {};
+    }
   }
 
   Future<Map<String, dynamic>> getOverTimeDataClients() async {
@@ -162,8 +181,9 @@ class Pihole {
     return await _getData(
       additionalParams: {
         'network': '',
-        '_': DateTime.timestamp().millisecond.toString(),
+        '_': DateTime.timestamp().millisecondsSinceEpoch.toString(),
       },
+      isApi: false,
     );
   }
 }

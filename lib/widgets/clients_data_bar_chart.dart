@@ -19,6 +19,7 @@ class ClientsDataBarChart extends StatefulWidget {
 class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
   Pihole pihole = GetIt.instance.get<Pihole>();
   final List<Color> colors = [];
+  List<Series<ClientsData, String>>? data;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,10 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
       future: _getOverTimeDataClients(),
       builder:
           (context, AsyncSnapshot<List<Series<ClientsData, String>>> snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Container();
+        }
+
         return Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Card(
@@ -47,6 +52,7 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: BarChart(
                         (snapshot.data ?? []).reversed.toList(),
+                        animate: false,
                         barGroupingType: BarGroupingType.stacked,
                         domainAxis: OrdinalAxisSpec(
                           renderSpec: SmallTickRendererSpec(
@@ -91,6 +97,8 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
   }
 
   Future<List<Series<ClientsData, String>>> _getOverTimeDataClients() async {
+    if (data != null) return data ?? [];
+
     Map<String, dynamic> overTimeDataClients =
         await pihole.getOverTimeDataClients();
 
@@ -138,6 +146,8 @@ class _ClientsDataBarChartState extends State<ClientsDataBarChart> {
 
       if (result.length == 12) break;
     }
+
+    data = result;
 
     return result;
   }

@@ -33,8 +33,6 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
   final TextEditingController _portController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _tokenController = TextEditingController();
-  final TextEditingController _userController = TextEditingController();
-  final TextEditingController _passController = TextEditingController();
   Protocol protocol = Protocol.http;
   AuthenticationType authenticationType = AuthenticationType.token;
   String infoLabel = '';
@@ -49,8 +47,6 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
     _portController.addListener(() => _updateInfoLabel());
     _nameController.addListener(() => _updateInfoLabel());
     _tokenController.addListener(() => _updateInfoLabel());
-    _userController.addListener(() => _updateInfoLabel());
-    _passController.addListener(() => _updateInfoLabel());
   }
 
   void loadOnEdit() {
@@ -59,8 +55,6 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
       _portController.text = server?.port ?? '';
       _nameController.text = server?.name ?? '';
       _tokenController.text = server?.authToken ?? '';
-      _userController.text = server?.user ?? '';
-      _passController.text = server?.password ?? '';
       protocol = server!.protocol;
       if (server!.authToken!.isNotEmpty) {
         authenticationType = AuthenticationType.token;
@@ -155,6 +149,7 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CustomTextField(
+                      key: const Key('host_text_field'),
                       controller: _hostController,
                       label: AppLocalizations.of(context)?.hostAddress,
                       icon: Icons.developer_board_rounded,
@@ -164,6 +159,7 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CustomTextField(
+                      key: const Key('port_text_field'),
                       controller: _portController,
                       label: AppLocalizations.of(context)?.port,
                       icon: Icons.numbers,
@@ -174,6 +170,7 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CustomTextField(
+                      key: const Key('name_text_field'),
                       controller: _nameController,
                       label: AppLocalizations.of(context)?.name,
                       icon: Icons.edit,
@@ -195,31 +192,11 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
                       ),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: SegmentedButton<AuthenticationType>(
-                  //     multiSelectionEnabled: false,
-                  //     segments: <ButtonSegment<AuthenticationType>>[
-                  //       ButtonSegment<AuthenticationType>(
-                  //         value: AuthenticationType.token,
-                  //         label: Text(AuthenticationType.token.getString()),
-                  //       ),
-                  //       ButtonSegment<AuthenticationType>(
-                  //         value: AuthenticationType.credentials,
-                  //         label:
-                  //             Text(AuthenticationType.credentials.getString()),
-                  //       ),
-                  //     ],
-                  //     selected: <AuthenticationType>{authenticationType},
-                  //     onSelectionChanged: (value) =>
-                  //         setState(() => authenticationType = value.first),
-                  //   ),
-                  // ),
-                  Visibility(
-                    visible: authenticationType == AuthenticationType.token,
-                    child: Padding(
+                  if (authenticationType == AuthenticationType.token)
+                    Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CustomTextField(
+                        key: const Key('token_text_field'),
                         controller: _tokenController,
                         label: authenticationType.getString(),
                         helperText:
@@ -238,35 +215,6 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
                         ),
                       ),
                     ),
-                  ),
-                  // Visibility(
-                  //   visible:
-                  //       authenticationType == AuthenticationType.credentials,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(8.0),
-                  //     child: CustomTextField(
-                  //       controller: _userController,
-                  //       label: AppLocalizations.of(context)?.user,
-                  //       icon: Icons.person,
-                  //       keyboardType: TextInputType.text,
-                  //     ),
-                  //   ),
-                  // ),
-                  // Visibility(
-                  //   visible:
-                  //       authenticationType == AuthenticationType.credentials,
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(8.0),
-                  //     child: CustomTextField(
-                  //       controller: _passController,
-                  //       label: AppLocalizations.of(context)?.password,
-                  //       icon: Icons.password_rounded,
-                  //       keyboardType: TextInputType.text,
-                  //       autocorrect: false,
-                  //       obscureText: true,
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ],
@@ -345,8 +293,8 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
       name: _nameController.text,
       protocol: protocol,
       authToken: _tokenController.text,
-      user: _userController.text,
-      password: _passController.text,
+      user: '',
+      password: '',
     );
 
     if (checkDummyPi(server)) return;
@@ -388,7 +336,7 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
     String port = _portController.text;
 
     if (host.isEmpty && port.isEmpty) {
-      setState(() => infoLabel = '');
+      if (infoLabel.isNotEmpty) setState(() => infoLabel = '');
       return;
     }
 
@@ -399,7 +347,5 @@ class _AddPi extends State<AddPi> with WidgetsBindingObserver {
   }
 
   bool get isButtonEnabled =>
-      _hostController.text.isNotEmpty &&
-      (_tokenController.text.isNotEmpty ||
-          _userController.text.isNotEmpty && _passController.text.isNotEmpty);
+      _hostController.text.isNotEmpty && _tokenController.text.isNotEmpty;
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:pihole_manager/enums/log_status_type.dart';
+import 'package:pihole_manager/enums/number_of_records.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/widgets/log_status.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,6 +27,11 @@ class _QueryLogState extends State<QueryLog> {
   final ScrollController _scrollController = ScrollController();
   final ValueNotifier<bool> _isScrollToTop = ValueNotifier<bool>(false);
 
+  NumberOfRecords numberOfRecords = NumberOfRecords.hundred;
+  LogStatusType? status;
+
+  Map<String, dynamic> queries = {};
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +44,8 @@ class _QueryLogState extends State<QueryLog> {
         _isScrollToTop.value = false;
       }
     });
+
+    getQueryTypes();
   }
 
   @override
@@ -54,7 +63,137 @@ class _QueryLogState extends State<QueryLog> {
               return IconButton(
                 icon: const Icon(Icons.more_vert),
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                onPressed: () => Scaffold.of(context).openEndDrawer(),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return ListView(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 16.0,
+                              top: 10.0,
+                            ),
+                            child: Text(
+                              AppLocalizations.of(context)?.filter ?? '',
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                          const Divider(),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)
+                                          ?.numberOfEntries ??
+                                      '',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge
+                                      ?.copyWith(
+                                        color: Colors.black54,
+                                      ),
+                                ),
+                                const SizedBox(height: 4.0),
+                                DropdownButtonFormField(
+                                  isExpanded: true,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  items: NumberOfRecords.values
+                                      .map(
+                                        (e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Text(
+                                            e.getDescription(),
+                                            style: const TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  value: numberOfRecords,
+                                  onChanged: (value) =>
+                                      numberOfRecords = value!,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)?.status ?? '',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge
+                                      ?.copyWith(
+                                        color: Colors.black54,
+                                      ),
+                                ),
+                                const SizedBox(height: 4.0),
+                                DropdownButtonFormField(
+                                  isExpanded: true,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  items: LogStatusType.values
+                                      .map(
+                                        (e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Text(
+                                            e.getString(context),
+                                            style: const TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  value: status,
+                                  onChanged: (value) => status = value!,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                getQueryTypes();
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                (AppLocalizations.of(context)?.apply ?? '')
+                                    .toUpperCase(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               );
             },
           ),
@@ -75,52 +214,9 @@ class _QueryLogState extends State<QueryLog> {
           );
         },
       ),
-      endDrawer: Drawer(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              child: Text(
-                'Filter',
-                style: TextStyle(
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('Total number of records'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Records per page'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Status'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
-      body: FutureBuilder(
-        future: pihole.getAllQueries(
-          forwarddest: (widget.showBlocked ?? false) ? 'blocked' : null,
-        ),
-        builder: (context, snapshot) {
-          if (snapshot.data == null) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          List<dynamic> data = snapshot.data!['data'] ?? [];
+      body: Builder(
+        builder: (context) {
+          List<dynamic> data = queries['data'] ?? [];
           data.sort(
             (a, b) {
               if (a is! List || b is! List) return 0;
@@ -138,7 +234,7 @@ class _QueryLogState extends State<QueryLog> {
               List<String> values = [];
               if (item is List) {
                 for (var element in item) {
-                  values.add(element);
+                  values.add(element.toString());
                 }
               }
 
@@ -181,6 +277,25 @@ class _QueryLogState extends State<QueryLog> {
         },
       ),
     );
+  }
+
+  Future<void> getQueryTypes() async {
+    Map<String, dynamic> result;
+    if (status != null) {
+      result = await pihole.getAllQueriesByStatus(
+        status: status,
+        numberOfRecords: numberOfRecords,
+      );
+    } else {
+      result = await pihole.getAllQueries(
+        forwarddest: (widget.showBlocked ?? false) ? 'blocked' : null,
+        numberOfRecords: numberOfRecords,
+      );
+    }
+
+    setState(() {
+      queries = result;
+    });
   }
 
   @override

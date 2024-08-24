@@ -47,7 +47,9 @@ class _Dashboard extends State<Dashboard> {
                     if (snapshot.connectionState == ConnectionState.waiting ||
                         !snapshot.hasData) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: RepaintBoundary(
+                          child: CircularProgressIndicator(),
+                        ),
                       );
                     }
                     Map<String, dynamic> data = snapshot.data!;

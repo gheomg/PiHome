@@ -17,6 +17,7 @@ class OverTimeDataChart extends StatefulWidget {
 class _OverTimeDataChart extends State<OverTimeDataChart> {
   Pihole pihole = GetIt.instance.get<Pihole>();
   final List<Color> colors = [];
+  List<Series<ClientsData, String>>? data;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,10 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
       future: _getOverTimeData(),
       builder:
           (context, AsyncSnapshot<List<Series<ClientsData, String>>> snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Container();
+        }
+
         return Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Card(
@@ -43,6 +48,7 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: BarChart(
                         (snapshot.data ?? []).reversed.toList(),
+                        animate: false,
                         barGroupingType: BarGroupingType.stacked,
                         domainAxis: OrdinalAxisSpec(
                           renderSpec: SmallTickRendererSpec(
@@ -87,11 +93,13 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
   }
 
   Future<List<Series<ClientsData, String>>> _getOverTimeData() async {
-    Map<String, dynamic> data = await pihole.getOverTimeData10mins();
+    if (data != null) return data ?? [];
+
+    Map<String, dynamic> overtimeData = await pihole.getOverTimeData10mins();
 
     Map<String, int> domainOverTime = {};
-    if (data['domains_over_time'] is Map) {
-      data['domains_over_time'].forEach((key, value) {
+    if (overtimeData['domains_over_time'] is Map) {
+      overtimeData['domains_over_time'].forEach((key, value) {
         if (key is String && value is int) {
           domainOverTime[key] = value;
         }
@@ -99,8 +107,8 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
     }
 
     Map<String, int> adsOverTime = {};
-    if (data['ads_over_time'] is Map) {
-      data['ads_over_time'].forEach((key, value) {
+    if (overtimeData['ads_over_time'] is Map) {
+      overtimeData['ads_over_time'].forEach((key, value) {
         if (key is String && value is int) {
           adsOverTime[key] = value;
         }
@@ -134,6 +142,8 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
 
       if (result.length == 12) break;
     }
+
+    data = result;
 
     return result;
   }

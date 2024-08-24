@@ -59,5 +59,9 @@
     "topPermittedDomains": "Top permitted domains",
     "topBlockedDomains": "Top blocked domains",
     "topClientsTotal": "Top Clients (total)",
-    "topClientsBlocked": "Top Clients (blocked only)"
+    "topClientsBlocked": "Top Clients (blocked only)",
+    "numberOfEntries": "Number of entries",
+    "status": "Status",
+    "apply": "Apply",
+    "filter": "Filter"
 }

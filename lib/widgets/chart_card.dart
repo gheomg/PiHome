@@ -36,7 +36,7 @@ class ChartCard extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 35.0),
                   child: PieChart<String>(
                     _createSampleData(),
-                    animate: true,
+                    animate: false,
                     defaultRenderer: ArcRendererConfig(
                       arcWidth: 35,
                     ),

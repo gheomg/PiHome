@@ -1,5 +1,7 @@
 // ignore_for_file: require_trailing_commas
 
+import 'package:pihole_manager/enums/log_status_type.dart';
+import 'package:pihole_manager/enums/number_of_records.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 
 class PiholeDummy extends Pihole {
@@ -155,7 +157,11 @@ class PiholeDummy extends Pihole {
   }
 
   @override
-  Future<Map<String, dynamic>> getAllQueries({String? forwarddest}) async {
+  Future<Map<String, dynamic>> getAllQueries({
+    String? forwarddest,
+    LogStatusType? status,
+    NumberOfRecords? numberOfRecords,
+  }) async {
     return {
       'data': [
         [
