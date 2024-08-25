@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:pihole_manager/enums/log_status_type.dart';
 import 'package:pihole_manager/enums/number_of_records.dart';
 import 'package:pihole_manager/enums/protocol.dart';
@@ -42,7 +43,7 @@ class Pihole {
   }
 
   Future<Response> _get({
-    Map<String, String>? additionalParams,
+    Map<String, dynamic>? additionalParams,
     bool isApi = true,
   }) async {
     Map<String, dynamic> params = {
@@ -57,7 +58,7 @@ class Pihole {
   }
 
   Future<Map<String, dynamic>> _getData({
-    Map<String, String>? additionalParams,
+    Map<String, dynamic>? additionalParams,
     bool isApi = true,
   }) async {
     final response = await _get(
@@ -131,7 +132,7 @@ class Pihole {
         'getAllQueries':
             (numberOfRecords ?? NumberOfRecords.hundred).getValue(),
         if (forwarddest != null) 'forwarddest': forwarddest,
-        '_': DateTime.timestamp().millisecondsSinceEpoch.toString(),
+        '_': DateTime.timestamp().millisecondsSinceEpoch,
       },
     );
   }
@@ -139,17 +140,15 @@ class Pihole {
   Future<Map<String, dynamic>> getAllQueriesByStatus({
     LogStatusType? status,
     NumberOfRecords? numberOfRecords,
+    DateTimeRange? range,
   }) async {
     final response = await _get(
       additionalParams: {
-        'getAllQueries':
-            (numberOfRecords ?? NumberOfRecords.hundred).getValue(),
-        '_': DateTime.timestamp().millisecondsSinceEpoch.toString(),
-        if (status != null)
-          'status':
-              '2,14,3,4,5,6,7,8,9,10,11,12,13,15,16,17', // status.getQueryTypes(),
-        'from': '1724446800',
-        'until': '1724529851.341',
+        'getAllQueries': '',
+        if (status != null) 'status': status.getQueryTypes(),
+        if (range != null) 'from': range.start.millisecondsSinceEpoch / 1000,
+        if (range != null) 'until': range.end.millisecondsSinceEpoch / 1000,
+        '_': DateTime.timestamp().millisecondsSinceEpoch / 1000,
       },
       isApi: false,
     );

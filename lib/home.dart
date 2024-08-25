@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pihole_manager/dashboard.dart';
 import 'package:pihole_manager/enums/navigation_item.dart';
 import 'package:pihole_manager/network.dart';
-import 'package:pihole_manager/query_log.dart';
+import 'package:pihole_manager/query_log/query_log.dart';
 import 'package:pihole_manager/top_lists.dart';
 import 'package:pihole_manager/widgets/my_drawer.dart';
 

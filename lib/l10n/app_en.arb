@@ -63,5 +63,16 @@
     "numberOfEntries": "Number of entries",
     "status": "Status",
     "apply": "Apply",
-    "filter": "Filter"
+    "filter": "Filter",
+    "dateRange": "Date range",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "last7Days": "Last 7 days",
+    "last30Days": "Last 30 days",
+    "thisMonth": "This month",
+    "lastMonth": "Last month",
+    "thisYear": "This year",
+    "lastYear": "Last year",
+    "allTime": "All time",
+    "customRange": "Custom range"
 }

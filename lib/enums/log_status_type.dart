@@ -88,6 +88,7 @@ extension LogStatusTypeExtension on LogStatusType {
           (e) => e.value != value && e.value != LogStatusType.unknown.value,
         )
         .map((e) => e.getValue())
+        .toSet()
         .join(',');
   }
 }
