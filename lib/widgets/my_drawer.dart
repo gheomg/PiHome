@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:pihole_manager/enums/navigation_item.dart';
 
 class MyDrawer extends StatelessWidget {
   final Function(int) onSelectionChanged;
@@ -14,92 +13,69 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.greenAccent,
-            ),
-            child: Text(
-              AppLocalizations.of(context)?.appName ?? '',
-              style: TextStyle(
-                fontSize: 24,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
+    return NavigationDrawer(
+      selectedIndex: selectedIndex,
+      onDestinationSelected: onSelectionChanged,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(28, 16, 16, 10),
+          child: Text(
+            AppLocalizations.of(context)?.appName ?? '',
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-          ListTile(
-            title: Text(
-              AppLocalizations.of(context)?.dashboard ?? '',
-            ),
-            leading: const Icon(
-              Icons.home_rounded,
-            ),
-            selected: selectedIndex == NavigationItem.dashboard.index,
-            onTap: () {
-              onSelectionChanged(NavigationItem.dashboard.index);
-              Navigator.pop(context);
-            },
+        ),
+        NavigationDrawerDestination(
+          icon: const Icon(
+            Icons.home_rounded,
           ),
-          const Divider(),
-          ListTile(
-            title: Text(
-              AppLocalizations.of(context)?.queryLog ?? '',
-            ),
-            leading: const Icon(
-              Icons.restore_rounded,
-            ),
-            selected: selectedIndex == NavigationItem.queryLog.index,
-            onTap: () {
-              onSelectionChanged(NavigationItem.queryLog.index);
-              Navigator.pop(context);
-            },
+          label: Text(
+            AppLocalizations.of(context)?.dashboard ?? '',
           ),
-          ListTile(
-            title: Text(
-              AppLocalizations.of(context)?.queriesBlocked ?? '',
-            ),
-            leading: const Icon(
-              Icons.lock_reset_rounded,
-            ),
-            selected: selectedIndex == NavigationItem.queryLogBlocked.index,
-            onTap: () {
-              onSelectionChanged(NavigationItem.queryLogBlocked.index);
-              Navigator.pop(context);
-            },
+        ),
+        const Divider(),
+        NavigationDrawerDestination(
+          label: Text(
+            AppLocalizations.of(context)?.queryLog ?? '',
           ),
-          ListTile(
-            title: Text(
-              AppLocalizations.of(context)?.topLists ?? '',
-            ),
-            leading: const Icon(
-              Icons.group_rounded,
-            ),
-            selected: selectedIndex == NavigationItem.topLists.index,
-            onTap: () {
-              onSelectionChanged(NavigationItem.topLists.index);
-              Navigator.pop(context);
-            },
+          icon: const Icon(
+            Icons.restore_rounded,
           ),
-          const Divider(),
-          ListTile(
-            title: Text(
-              AppLocalizations.of(context)?.network ?? '',
-            ),
-            leading: const Icon(
-              Icons.lan_rounded,
-            ),
-            selected: selectedIndex == NavigationItem.network.index,
-            onTap: () {
-              onSelectionChanged(NavigationItem.network.index);
-              Navigator.pop(context);
-            },
+        ),
+        NavigationDrawerDestination(
+          label: Text(
+            AppLocalizations.of(context)?.queriesBlocked ?? '',
           ),
-        ],
-      ),
+          icon: const Icon(
+            Icons.lock_reset_rounded,
+          ),
+        ),
+        NavigationDrawerDestination(
+          label: Text(
+            AppLocalizations.of(context)?.topLists ?? '',
+          ),
+          icon: const Icon(
+            Icons.group_rounded,
+          ),
+        ),
+        const Divider(),
+        NavigationDrawerDestination(
+          label: Text(
+            AppLocalizations.of(context)?.domains ?? '',
+          ),
+          icon: const Icon(
+            Icons.view_list_rounded,
+          ),
+        ),
+        const Divider(),
+        NavigationDrawerDestination(
+          label: Text(
+            AppLocalizations.of(context)?.network ?? '',
+          ),
+          icon: const Icon(
+            Icons.lan_rounded,
+          ),
+        ),
+      ],
     );
   }
 }

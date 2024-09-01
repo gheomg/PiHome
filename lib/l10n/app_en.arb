@@ -74,5 +74,12 @@
     "thisYear": "This year",
     "lastYear": "Last year",
     "allTime": "All time",
-    "customRange": "Custom range"
+    "customRange": "Custom range",
+    "domains": "Domains",
+    "whiteList": "White list",
+    "blackList": "Black list",
+    "whitelist": "Whitelist",
+    "blacklist": "Blacklist",
+    "regexWhitelist": "Regex whitelist",
+    "regexBlacklist": "Regex blacklist"
 }

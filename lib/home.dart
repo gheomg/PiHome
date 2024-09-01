@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pihole_manager/dashboard.dart';
+import 'package:pihole_manager/domains/domains.dart';
 import 'package:pihole_manager/enums/navigation_item.dart';
 import 'package:pihole_manager/network.dart';
 import 'package:pihole_manager/query_log/query_log.dart';
@@ -33,28 +34,33 @@ class _HomeState extends State<Home> {
   }
 
   Widget get body {
-    switch (selectedIndex) {
-      case 0:
+    NavigationItem selectedItem = NavigationItem.values[selectedIndex];
+    switch (selectedItem) {
+      case NavigationItem.dashboard:
         return Dashboard(
           drawer: myDrawer,
           onNavigateTo: _onNavigateTo,
         );
-      case 1:
+      case NavigationItem.queryLog:
         return QueryLog(
           key: const Key('query_log'),
           drawer: myDrawer,
         );
-      case 2:
+      case NavigationItem.queryLogBlocked:
         return QueryLog(
           key: const Key('query_log_blocked'),
           drawer: myDrawer,
           showBlocked: true,
         );
-      case 3:
+      case NavigationItem.topLists:
         return TopLists(
           drawer: myDrawer,
         );
-      case 4:
+      case NavigationItem.domains:
+        return Domains(
+          drawer: myDrawer,
+        );
+      case NavigationItem.network:
         return Network(
           drawer: myDrawer,
         );

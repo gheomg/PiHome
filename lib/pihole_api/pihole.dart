@@ -185,4 +185,36 @@ class Pihole {
       isApi: false,
     );
   }
+
+  Future<Map<String, dynamic>> getWhiteList() async {
+    return await _getData(
+      additionalParams: {
+        'list': 'white',
+      },
+    );
+  }
+
+  Future<Map<String, dynamic>> getRegexWhiteList() async {
+    return await _getData(
+      additionalParams: {
+        'list': 'regex_white',
+      },
+    );
+  }
+
+  Future<Map<String, dynamic>> getBlackList() async {
+    return await _getData(
+      additionalParams: {
+        'list': 'black',
+      },
+    );
+  }
+
+  Future<Map<String, dynamic>> getRegexBlackList() async {
+    return await _getData(
+      additionalParams: {
+        'list': 'regex_black',
+      },
+    );
+  }
 }
