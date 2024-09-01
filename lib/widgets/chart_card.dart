@@ -1,6 +1,5 @@
-import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:pihole_manager/models/chart_data.dart';
+import 'package:gauge_chart/gauge_chart.dart';
 import 'package:pihole_manager/utils/colors_utils.dart';
 
 class ChartCard extends StatelessWidget {
@@ -21,61 +20,35 @@ class ChartCard extends StatelessWidget {
       child: Card(
         child: SizedBox(
           height: 220,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(top: 4.0, left: 8.0),
-                child: Text(title),
-              ),
-              const Divider(),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 35.0),
-                  child: PieChart<String>(
-                    _createSampleData(),
-                    animate: false,
-                    defaultRenderer: ArcRendererConfig(
-                      arcWidth: 35,
-                    ),
-                    behaviors: [
-                      DatumLegend(
-                        position: BehaviorPosition.end,
-                        cellPadding:
-                            const EdgeInsets.only(right: 4.0, bottom: 4.0),
-                        legendDefaultMeasure: LegendDefaultMeasure.firstValue,
-                        horizontalFirst: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: RepaintBoundary(
+              child: GaugeChart(
+                children: dataMap.entries.map(
+                  (e) {
+                    return PieData(
+                      value: e.value,
+                      color: ColorsUtils.colors.elementAt(
+                        dataMap.keys.toList().indexOf(e.key),
                       ),
-                    ],
-                  ),
-                ),
+                      description: e.key.split('|').first,
+                    );
+                  },
+                ).toList(),
+                gap: 10,
+                animateDuration: const Duration(seconds: 1),
+                shouldAnimate: true,
+                animateFromEnd: false,
+                isHalfChart: false,
+                size: 150,
+                showValue: false,
+                borderWidth: 25,
+                showLegend: true,
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
-  }
-
-  List<Series<ChartData, String>> _createSampleData() {
-    return [
-      Series<ChartData, String>(
-        id: 'ChartData',
-        domainFn: (ChartData data, index) => data.name.split('|').last,
-        measureFn: (ChartData data, _) => data.value,
-        colorFn: (_, int? index) =>
-            ColorsUtils.getClientColor(colors, index ?? 0),
-        data: dataMap.entries
-            .map(
-              (entry) => ChartData(
-                entry.key,
-                entry.value,
-              ),
-            )
-            .toList(),
-      ),
-    ];
   }
 }

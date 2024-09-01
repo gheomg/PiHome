@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pihole_manager/enums/navigation_item.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
@@ -6,7 +7,6 @@ import 'package:pihole_manager/widgets/chart_card.dart';
 import 'package:pihole_manager/widgets/clients_data_bar_chart.dart';
 import 'package:pihole_manager/widgets/info_card.dart';
 import 'package:pihole_manager/widgets/over_time_data_chart.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Dashboard extends StatefulWidget {
   final Widget drawer;

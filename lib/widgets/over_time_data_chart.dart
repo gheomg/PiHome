@@ -46,36 +46,38 @@ class _OverTimeDataChart extends State<OverTimeDataChart> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0),
-                      child: BarChart(
-                        (snapshot.data ?? []).reversed.toList(),
-                        animate: false,
-                        barGroupingType: BarGroupingType.stacked,
-                        domainAxis: OrdinalAxisSpec(
-                          renderSpec: SmallTickRendererSpec(
-                            labelStyle: TextStyleSpec(
-                              fontSize: 10,
-                              color: ColorsUtils.getColor2(
-                                Theme.of(context).hintColor,
+                      child: RepaintBoundary(
+                        child: BarChart(
+                          (snapshot.data ?? []).reversed.toList(),
+                          animate: false,
+                          barGroupingType: BarGroupingType.stacked,
+                          domainAxis: OrdinalAxisSpec(
+                            renderSpec: SmallTickRendererSpec(
+                              labelStyle: TextStyleSpec(
+                                fontSize: 10,
+                                color: ColorsUtils.getColor2(
+                                  Theme.of(context).hintColor,
+                                ),
                               ),
-                            ),
-                            lineStyle: LineStyleSpec(
-                              color: ColorsUtils.getColor2(
-                                Theme.of(context).hintColor,
+                              lineStyle: LineStyleSpec(
+                                color: ColorsUtils.getColor2(
+                                  Theme.of(context).hintColor,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        primaryMeasureAxis: NumericAxisSpec(
-                          renderSpec: GridlineRendererSpec(
-                            labelStyle: TextStyleSpec(
-                              fontSize: 10,
-                              color: ColorsUtils.getColor2(
-                                Theme.of(context).hintColor,
+                          primaryMeasureAxis: NumericAxisSpec(
+                            renderSpec: GridlineRendererSpec(
+                              labelStyle: TextStyleSpec(
+                                fontSize: 10,
+                                color: ColorsUtils.getColor2(
+                                  Theme.of(context).hintColor,
+                                ),
                               ),
-                            ),
-                            lineStyle: LineStyleSpec(
-                              color: ColorsUtils.getColor2(
-                                Theme.of(context).hintColor,
+                              lineStyle: LineStyleSpec(
+                                color: ColorsUtils.getColor2(
+                                  Theme.of(context).hintColor,
+                                ),
                               ),
                             ),
                           ),

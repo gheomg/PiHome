@@ -35,6 +35,11 @@ class _QueryLogState extends State<QueryLog> {
 
   Map<String, dynamic> queries = {};
 
+  final TextEditingController _queryLogSearchController =
+      TextEditingController();
+  bool isSearch = false;
+  final ValueNotifier<String> _searchText = ValueNotifier('');
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +53,12 @@ class _QueryLogState extends State<QueryLog> {
       }
     });
 
+    _queryLogSearchController.addListener(
+      () {
+        _searchText.value = _queryLogSearchController.text;
+      },
+    );
+
     getQueryTypes();
   }
 
@@ -55,41 +66,72 @@ class _QueryLogState extends State<QueryLog> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          (widget.showBlocked ?? false)
-              ? AppLocalizations.of(context)?.queriesBlocked ?? ''
-              : AppLocalizations.of(context)?.queryLog ?? '',
+        title: Builder(
+          builder: (context) {
+            if (isSearch) {
+              return TextField(
+                key: const Key('query_log_search'),
+                controller: _queryLogSearchController,
+                decoration: const InputDecoration(
+                  label: Text('Type / Domain / Client'),
+                  floatingLabelBehavior: FloatingLabelBehavior.never,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  ),
+                  isDense: true,
+                ),
+              );
+            }
+            return Text(
+              (widget.showBlocked ?? false)
+                  ? AppLocalizations.of(context)?.queriesBlocked ?? ''
+                  : AppLocalizations.of(context)?.queryLog ?? '',
+            );
+          },
         ),
         actions: [
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: const Icon(Icons.more_vert),
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    useSafeArea: true,
-                    builder: (context) => FilterBottomSheet(
-                      initialRange: _range,
-                      initialStatus: _status,
-                      initialDateTimeRange: _dateTimeRange,
-                      onApply: (
-                        LogStatusType status,
-                        DateTimeRange dateTimeRange,
-                        DateRange range,
-                      ) {
-                        _status = status;
-                        _dateTimeRange = dateTimeRange;
-                        _range = range;
-                        getQueryTypes();
-                      },
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+          if (!(widget.showBlocked ?? false))
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  onPressed: () {
+                    setState(() => isSearch = !isSearch);
+                    if (!isSearch) _searchText.value = '';
+                  },
+                  icon: Icon(isSearch ? Icons.close : Icons.search_rounded),
+                );
+              },
+            ),
+          if (!(widget.showBlocked ?? false))
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: const Icon(Icons.more_vert),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      useSafeArea: true,
+                      builder: (context) => FilterBottomSheet(
+                        initialRange: _range,
+                        initialStatus: _status,
+                        initialDateTimeRange: _dateTimeRange,
+                        onApply: (
+                          LogStatusType status,
+                          DateTimeRange dateTimeRange,
+                          DateRange range,
+                        ) {
+                          _status = status;
+                          _dateTimeRange = dateTimeRange;
+                          _range = range;
+                          getQueryTypes();
+                        },
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
         ],
       ),
       drawer: widget.drawer,
@@ -108,10 +150,20 @@ class _QueryLogState extends State<QueryLog> {
         },
       ),
       body: SafeArea(
-        child: Builder(
-          builder: (context) {
-            List<dynamic> data = queries['data'] ?? [];
-            data.sort(
+        child: ValueListenableBuilder(
+          valueListenable: _searchText,
+          builder: (context, searchText, child) {
+            List<dynamic> filteredData =
+                queries['data']?.whereType<List>().toList() ?? [];
+
+            if (searchText.isNotEmpty) {
+              filteredData = filteredData.where((item) {
+                String combinedItem = item.join(' ').toLowerCase();
+                return combinedItem.contains(searchText.toLowerCase());
+              }).toList();
+            }
+
+            filteredData.sort(
               (a, b) {
                 if (a is! List || b is! List) return 0;
                 return b.elementAt(0).compareTo(a.elementAt(0));
@@ -121,10 +173,10 @@ class _QueryLogState extends State<QueryLog> {
             return ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               controller: _scrollController,
-              itemCount: data.length,
+              itemCount: filteredData.length,
               separatorBuilder: (context, index) => const Divider(),
               itemBuilder: (context, index) {
-                dynamic item = data.elementAt(index);
+                dynamic item = filteredData.elementAt(index);
                 List<String> values = [];
                 if (item is List) {
                   for (var element in item) {
