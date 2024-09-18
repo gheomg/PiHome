@@ -15,3 +15,14 @@ System health monitoring: Check Pi-hole's status and identify potential problems
 Intuitive interface: Easy-to-use design for effortless navigation.
 
 Note: This app requires a Pi-hole server to be set up and running on your network.
+
+
+Help improve PiHome and join the closed beta test on Android and provide valuable feedback.
+
+Join on Android:
+https://play.google.com/store/apps/details?id=com.gmihai.pihome
+
+Join on the web:
+https://play.google.com/apps/testing/com.gmihai.pihome
+
+Thank you for your support!
