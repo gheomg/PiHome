@@ -1,16 +1,17 @@
-# pihole_manager
+# PiHome
 
-A new Flutter project.
+Disclaimer: This app is a third-party application and is not affiliated with the Pi-hole project.
 
-## Getting Started
+Gain complete control over your Pi-hole experience with our mobile app.
 
-This project is a starting point for a Flutter application.
+Enjoy real-time insights into your network's ad-blocking performance. Monitor blocked ads, DNS queries, and overall system health with ease. This user-friendly app provides a clear overview of your Pi-hole's activity, allowing you to make informed decisions about your network's security and performance.
 
-A few resources to get you started if this is your first Flutter project:
+Key features:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Real-time statistics: View live updates on blocked ads, DNS queries, and more.
+Ad blocking overview: Analyze ad blocking efficiency and identify top blocked domains.
+DNS query insights: Understand your network's traffic patterns and potential issues.
+System health monitoring: Check Pi-hole's status and identify potential problems.
+Intuitive interface: Easy-to-use design for effortless navigation.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Note: This app requires a Pi-hole server to be set up and running on your network.
