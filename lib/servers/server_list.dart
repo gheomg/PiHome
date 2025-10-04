@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pihole_manager/database/database_helper.dart';
 import 'package:pihole_manager/home.dart';
+import 'package:pihole_manager/l10n/app_localizations.dart';
 import 'package:pihole_manager/models/server_details.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/servers/add_pi.dart';

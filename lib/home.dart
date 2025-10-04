@@ -64,8 +64,6 @@ class _HomeState extends State<Home> {
         return Network(
           drawer: myDrawer,
         );
-      default:
-        return Container();
     }
   }
 

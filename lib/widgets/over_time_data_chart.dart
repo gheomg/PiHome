@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:community_charts_flutter/community_charts_flutter.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:pihole_manager/l10n/app_localizations.dart';
 import 'package:pihole_manager/models/clients_data.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/utils/colors_utils.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OverTimeDataChart extends StatefulWidget {
   const OverTimeDataChart({super.key});

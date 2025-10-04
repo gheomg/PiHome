@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:pihole_manager/enums/date_range.dart';
 import 'package:pihole_manager/enums/log_status_type.dart';
+import 'package:pihole_manager/l10n/app_localizations.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   final Function(LogStatusType, DateTimeRange, DateRange) onApply;

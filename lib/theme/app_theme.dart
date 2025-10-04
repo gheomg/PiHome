@@ -24,7 +24,7 @@ class AppTheme {
         systemNavigationBarColor: Colors.lightGreen.shade50,
       ),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: Colors.grey.shade50,
       shadowColor: Colors.grey.withOpacity(0.5),
       elevation: 3,
@@ -65,7 +65,7 @@ class AppTheme {
         systemNavigationBarColor: Colors.black,
       ),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: Colors.grey.shade900,
       shadowColor: Colors.grey.withOpacity(0.5),
       elevation: 3,

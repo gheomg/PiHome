@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:pihole_manager/enums/date_range.dart';
 import 'package:pihole_manager/enums/log_status_type.dart';
 import 'package:pihole_manager/enums/number_of_records.dart';
+import 'package:pihole_manager/l10n/app_localizations.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
 import 'package:pihole_manager/query_log/filter_bottom_sheet.dart';
 import 'package:pihole_manager/widgets/log_status.dart';

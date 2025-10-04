@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
+import 'package:pihole_manager/l10n/app_localizations.dart';
 import 'package:pihole_manager/pihole_api/pihole.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Network extends StatefulWidget {
   final Widget drawer;
+
   const Network({
     super.key,
     required this.drawer,

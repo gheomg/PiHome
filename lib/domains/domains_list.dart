@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pihole_manager/l10n/app_localizations.dart';
 
 class DomainsList extends StatefulWidget {
   final List<Future<Map<String, dynamic>>> futures;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pihole_manager/l10n/app_localizations.dart';
 import 'package:pihole_manager/models/server_details.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ServerCard extends StatefulWidget {
   final ServerDetails server;
